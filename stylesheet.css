@@ -1,0 +1,73 @@
+button {
+    border-radius: 10px;
+    background-color: #ddd;
+    border-color: #28313d;
+    border-width: 5px;
+    color:black;
+    width: 100px;
+    height: 30px;
+}
+
+button:hover {
+    background-color: #bbb;
+}
+
+body {
+    margin: 0; 
+    background-color: #f8f8f8;
+}
+
+input {
+    background-color: #ececec;
+}
+
+.headerbar {
+    background-color: #28313d;
+}
+
+.red-hat-display-normal {
+  font-family: "Red Hat Display", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pairing-code {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.pairing-code input {
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 24px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.pairing-code input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.pairing-code-container {
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.pairing-code-label {
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.center {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}

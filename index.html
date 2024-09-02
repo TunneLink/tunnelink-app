@@ -1,41 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>TunneLink</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-.headerbar {
-    background-color: #28313d;
-}
-.red-hat-display-normal {
-  font-family: "Red Hat Display", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 300;
-  font-style: normal;
-}
-button {
-    border-radius: 10px;
-    background-color: #28313d;
-    color:aliceblue;
-    width: 100px;
-    height: 30px;
-}
-</style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>TunneLink</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet">
+        <link rel="stylesheet" href="stylesheet.css">
+        <link rel="icon" href="TunneLink logo.png" type="image/png">
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            rel="stylesheet">
+    </head>
 
-<body style="margin: 0;">
-<div class="headerbar">
-        
-        <div style="text-align: center;"><img src="TunneLink logo.png" style="width: 175px; height: 100px;"></div>
-</div>   
+    <body>
 
-<div style="margin-top: 20px;">
-    <a href="clientpage.html"><button style="margin-left: 25px;">CLIENT</button></a>
-</div>
+        <header>
+            <div class="headerbar">
+                <div style="text-align: center;"><img src="TunneLink logo.png"
+                        style="width: 180px; height: 75px;"></div>
+            </div>
+        </header>
 
-</body>
+        <div class="center" style="display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 50px;
+        gap: 80px;">
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <img src="client.png"
+                    style="width: 160px; height: 150px; margin-bottom: 20px;">
+                <a href="clientpage.html"><button class="red-hat-display-normal"
+                        style="">CLIENT</button></a>
+            </div>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+                <img src="server.png"
+                    style="width: 160px; height: 150px; margin-bottom: 20px;">
+                <a href="serverpage.html"><button class="red-hat-display-normal"
+                        style="">SERVER</button></a>
+            </div>
+        </div>
 
+    </body>
 </html>
