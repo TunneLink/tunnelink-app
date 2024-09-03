@@ -1,4 +1,13 @@
-button {
+button.list {
+    border-radius: 15px;
+    background-color: #888;
+}
+
+button.list:hover {
+    background-color: #555;
+}
+
+button.small {
     border-radius: 10px;
     background-color: #ddd;
     border-color: #28313d;
@@ -8,7 +17,7 @@ button {
     height: 30px;
 }
 
-button:hover {
+button.small:hover {
     background-color: #bbb;
 }
 
