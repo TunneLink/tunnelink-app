@@ -44,10 +44,6 @@
         </div>
     </div>
 
-    <div>
-
-    </div>
-
     <script>
     function moveToNext(current, nextFieldID) {
         if (current.value.length === 1) {
@@ -82,7 +78,7 @@
 
         if (userInput === correctCode) {
             // Correct code, proceed to the next step
-            alert('Code is correct!');
+            window.location.href = 'loading-page.html';
         } else {
             // Incorrect code, show error message
             document.getElementById('errorMessage').style.display = 'block';
