@@ -36,10 +36,16 @@
                     oninput="moveToNext(this, null)"
                     onkeydown="moveToPrev(event, 'input3')">
             </div>
-            <button onclick="getInputValues()"
+            <button onclick="checkPairingCode()"
                 style="margin-top: 50px; width: 150px; font-size: 16px;"
                 class="red-hat-display-normal">CONFIRM</button>
+                <p id="errorMessage" style="color: red; display: none; margin-top: 10px;">Incorrect code. Please try again.</p>
+            </div>
         </div>
+    </div>
+
+    <div>
+
     </div>
 
     <script>
@@ -67,7 +73,20 @@
         
         // Combine the values into a single variable (e.g., as a string)
         const pairingCode = input1Value + input2Value + input3Value + input4Value;
-        
+        return pairingCode;
+    }
+
+    function checkPairingCode() {
+        const correctCode = "1234";  // Replace with the actual correct code
+        const userInput = getInputValues();
+
+        if (userInput === correctCode) {
+            // Correct code, proceed to the next step
+            alert('Code is correct!');
+        } else {
+            // Incorrect code, show error message
+            document.getElementById('errorMessage').style.display = 'block';
+        }
     }
 </script>
 </body>
