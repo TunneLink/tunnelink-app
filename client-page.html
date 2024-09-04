@@ -15,7 +15,7 @@
 <body>
     <header>
         <div class="headerbar">
-            <div style="text-align: center;"><img src="TunneLink logo.png"
+            <div style="text-align: center;"><img src="tunnelink-logo.png"
                     style="width: 180px; height: 75px;"></div>
         </div>
     </header>
@@ -38,10 +38,14 @@
             </div>
             <button onclick="checkPairingCode()"
                 style="margin-top: 50px; width: 150px; font-size: 16px;"
-                class="red-hat-display-normal">CONFIRM</button>
+                class="red-hat-display-normal small">CONFIRM</button>
                 <p id="errorMessage" style="color: red; display: none; margin-top: 10px;">Incorrect code. Please try again.</p>
             </div>
         </div>
+    </div>
+
+    <div>
+
     </div>
 
     <script>
@@ -78,7 +82,7 @@
 
         if (userInput === correctCode) {
             // Correct code, proceed to the next step
-            window.location.href = 'loading-page.html';
+            alert('Code is correct!');
         } else {
             // Incorrect code, show error message
             document.getElementById('errorMessage').style.display = 'block';
