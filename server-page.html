@@ -8,6 +8,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
+
+    <style>
+        /* Styling for each digit */
+        .digit {
+            font-size: 150px;
+            margin-right: 35px; /* Add margin between digits */
+            display: inline-block;
+            font-family: 'Red Hat Display', sans-serif;
+        }
+
+        .digit:last-child {
+            margin-right: 0; /* Remove the margin after the last digit */
+        }
+    </style>
 </head>
 
 <body>
@@ -18,15 +32,15 @@
     </header>
 
     <div style="text-align: center; margin-top: 125px;">
-        <h2 class="red-hat-display-normal small" style="font-size: 25px;">SERVER PAIRING CODE:</h2>
-        <h1 id="pairingCode" style="font-size: 99px; letter-spacing: 25px;" class="red-hat-display-normal center">XXXX</h1> <!-- Placeholder code -->
+        <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">SERVER PAIRING CODE:</h2>
+        <div id="pairingCode"></div> <!-- Placeholder code -->
     </div>
 
     <script>
         // Example of generating a random server code (4 digits)
         function generateServerCode() {
             // Simulating a 4-digit code (you can replace this with an actual server-side value)
-            const serverCode = Math.floor(1000+Math.random() * 9000); // Generates a random 4-digit number
+            const serverCode = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
             return serverCode;
         }
 
@@ -43,8 +57,15 @@
         // Display the server code on load
         function displayServerCode() {
             const pairingCodeElement = document.getElementById('pairingCode');
-            const generatedCode = generateServerCode();  // Fetch or generate code
-            pairingCodeElement.textContent = generatedCode;  // Update the page with the code
+            const generatedCode = generateServerCode().toString();
+
+            // Create spans for each digit to control spacing
+            for (let i = 0; i < generatedCode.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = generatedCode[i];
+                span.className = 'digit'; // Apply styles to each digit
+                pairingCodeElement.appendChild(span);
+            }
 
             // Check for successful connection
             checkConnectionStatus().then((isConnected) => {
@@ -61,6 +82,8 @@
 
             // Change the title and hide the pairing code
             statusTitle.textContent = "You Have Been Connected!";
+            statusTitle.style.fontSize = "72px";
+            statusTitle.style.marginTop = "225px";
             pairingCodeElement.style.display = 'none';  // Hide the pairing code once connected
         }
 
