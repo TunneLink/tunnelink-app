@@ -17,7 +17,54 @@
         </div>   
     </header>
 
-    <div>
-        
+    <div style="text-align: center; margin-top: 125px;">
+        <h2 class="red-hat-display-normal small" style="font-size: 25px;">SERVER PAIRING CODE:</h2>
+        <h1 id="pairingCode" style="font-size: 99px; letter-spacing: 25px;" class="red-hat-display-normal center">XXXX</h1> <!-- Placeholder code -->
     </div>
+
+    <script>
+        // Example of generating a random server code (4 digits)
+        function generateServerCode() {
+            // Simulating a 4-digit code (you can replace this with an actual server-side value)
+            const serverCode = Math.floor(1000+Math.random() * 9000); // Generates a random 4-digit number
+            return serverCode;
+        }
+
+        // Simulated function to check if connection is successful
+        function checkConnectionStatus() {
+            // Simulate checking from server; here we'll just use a random result
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(true);  // Simulate success (change to false for failure)
+                }, 3000);  // Simulate server response time (3 seconds)
+            });
+        }
+
+        // Display the server code on load
+        function displayServerCode() {
+            const pairingCodeElement = document.getElementById('pairingCode');
+            const generatedCode = generateServerCode();  // Fetch or generate code
+            pairingCodeElement.textContent = generatedCode;  // Update the page with the code
+
+            // Check for successful connection
+            checkConnectionStatus().then((isConnected) => {
+                if (isConnected) {
+                    displayConnectionSuccess();
+                }
+            });
+        }
+
+        // Update the UI to show connection success
+        function displayConnectionSuccess() {
+            const statusTitle = document.getElementById('statusTitle');
+            const pairingCodeElement = document.getElementById('pairingCode');
+
+            // Change the title and hide the pairing code
+            statusTitle.textContent = "You Have Been Connected!";
+            pairingCodeElement.style.display = 'none';  // Hide the pairing code once connected
+        }
+
+        // Display the server code when the page loads
+        window.onload = displayServerCode;
+    </script>
 </body>

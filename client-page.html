@@ -82,7 +82,7 @@
             const userInput = getInputValues();
 
             if (userInput === correctCode) {
-                alert('Code is correct!');
+                window.location.href = 'loading-page-client.html'
             } else {
                 document.getElementById('errorMessage').style.display = 'block';
             }
