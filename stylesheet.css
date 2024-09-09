@@ -84,11 +84,16 @@ input {
 .center-loading {
     position: absolute;
     left: 50%;
-    top: 51.5%;
+    top: 54%;
     transform: translate(-50%, -50%);
 }
 
-
+.center-animation {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+}
 
 body {
     font-family: 'Red Hat Display', sans-serif;
@@ -176,7 +181,6 @@ body {
 
 /*loading animation*/
 .container {
-    position: relative;
     width: 400px;
     height: 400px;
   }
