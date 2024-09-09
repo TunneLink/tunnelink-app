@@ -81,6 +81,15 @@ input {
     transform: translate(-50%, -50%);
 }
 
+.center-loading {
+    position: absolute;
+    left: 50%;
+    top: 51.5%;
+    transform: translate(-50%, -50%);
+}
+
+
+
 body {
     font-family: 'Red Hat Display', sans-serif;
     background-color: #f4f4f4;
