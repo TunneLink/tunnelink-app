@@ -17,16 +17,51 @@
     </head>
 
     <body>
-        <header>
-            <div class="headerbar">
-                <div style="text-align: center;"><img src="tunnelink-logo.png"
-                        style="width: 180px; height: 75px;"></div>
-            </div>
+        <header class="headerbar">
+            <div style="text-align: center;"><img src="tunnelink-logo.png"
+                style="width: 180px; height: 75px;"></div>
         </header>
 
-        <div>
-            <button class="red-hat-display-normal list"></button>
+        <!-- Main content section -->
+        <div class="main-container">
+            <h1 class="server-title">SERVER</h1>
+            <div id="serverGrid" class="server-grid"></div>
         </div>
 
+        <script>
+        const serverCount = 100; // Set the number of server items you want to display
+        const serverGrid = document.getElementById('serverGrid');
+
+        for (let i = 1; i <= serverCount; i++) {
+            const serverItem = document.createElement('div');
+            serverItem.className = 'server-item';
+            serverItem.onclick = function () {
+                this.classList.toggle('expanded'); // Toggle the expanded class on click
+            };
+
+            const serverIcon = document.createElement('img');
+            serverIcon.src = 'server.png'; // Replace with your server icon path
+            serverIcon.alt = 'Server Icon';
+
+            const serverName = document.createElement('p');
+            serverName.className = 'server-name';
+            serverName.textContent = `(Server name ${i})`;
+
+            const serverDetails = document.createElement('ul');
+            serverDetails.className = 'server-details';
+
+            // Add details for the expanded view
+            for (let j = 1; j <= 4; j++) {
+                const detailItem = document.createElement('li');
+                detailItem.textContent = `Detail ${j} for server ${i}`;
+                serverDetails.appendChild(detailItem);
+            }
+
+            serverItem.appendChild(serverIcon);
+            serverItem.appendChild(serverName);
+            serverItem.appendChild(serverDetails);
+            serverGrid.appendChild(serverItem);
+        }
+        </script>
     </body>
 </html>
