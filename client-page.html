@@ -34,8 +34,8 @@
     </div>
 
     <script>
-        // Add event listeners after the DOM is fully loaded
-        document.addEventListener('DOMContentLoaded', function () {
+         // Add event listeners after the DOM is fully loaded
+         document.addEventListener('DOMContentLoaded', function () {
             const inputs = document.querySelectorAll('.pairing-code input');
             inputs.forEach((input, index) => {
                 input.addEventListener('input', function () {
@@ -47,19 +47,16 @@
                 });
             });
         });
-
         function moveToNext(current, nextField) {
             if (current.value.length === 1 && nextField) {
                 nextField.focus();
             }
         }
-
         function moveToPrev(event, prevField) {
             if (event.key === "Backspace" && event.target.value === "" && prevField) {
                 prevField.focus();
             }
         }
-
         function getInputValues() {
             // Get the value of each input field
             const inputs = document.querySelectorAll('.pairing-code input');
@@ -67,17 +64,14 @@
             inputs.forEach(input => pairingCode += input.value);
             return pairingCode;
         }
-
         function detectEnterKey(event) {
             if (event.key === "Enter") {
-                getInputValues();
+                checkPairingCode();
             }
         }
-
         function checkPairingCode() {
             const correctCode = "1234"; // Replace with the actual correct code
-            const userInput = pairingCode;
-
+            const userInput = getInputValues();
             if (userInput === correctCode) {
                 window.location.href = 'loading-page-client.html'
             } else {
