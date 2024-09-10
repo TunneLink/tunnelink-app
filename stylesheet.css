@@ -363,3 +363,7 @@ input {
 .floating-button:hover {
     background-color: #003670; /* Darker color on hover */
 }
+
+.no-cursor {
+  caret-color: transparent; /* Hides the blinking cursor */
+}
