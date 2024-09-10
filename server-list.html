@@ -23,13 +23,17 @@
         </header>
 
         <!-- Main content section -->
-        <div class="main-container">
-            <h1 class="server-title">SERVER</h1>
+        <div class="main-container" style="margin-top: -30px;">
+            <h1 class="server-title">SERVER LIST</h1>
             <div id="serverGrid" class="server-grid"></div>
         </div>
 
+        <button class="floating-button">
+            <i class="fas fa-plus"></i> <!-- Plus Icon using Font Awesome -->
+        </button>
+
         <script>
-        const serverCount = 100; // Set the number of server items you want to display
+            const serverCount = 8; // Set the number of server items you want to display
         const serverGrid = document.getElementById('serverGrid');
 
         for (let i = 1; i <= serverCount; i++) {

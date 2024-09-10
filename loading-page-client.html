@@ -32,22 +32,33 @@
         window.onload = function () {
             setTimeout(redirectBasedOnCondition, 10000000); // 3000 milliseconds = 3 seconds
         };
+
+        function checkPairingCode() {
+            const correctCode = "1234"; // Replace with the actual correct code
+            const userInput = pairingCode;
+
+            if (userInput === correctCode) {
+                window.location.href = 'loading-page-client.html'
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
         </script>
     </head>
 
     <body style="background-color: #28313d;">
         <div class="container center-animation">
-            <div class="content">
-              <div class="track"></div>
-              <div class="train">
-                <div class="carOne"></div>
-                <div class="carTwo"></div>
-                <div class="carThree"></div>
-              </div>
-              </ul>
-              <div class="tunnel"></div> <!-- Tunnel element -->
+            <div class="track"></div>
+            <div class="train">
+              <div class="carOne"></div>
+              <div class="carTwo"></div>
+              <div class="carThree"></div>
             </div>
+            </ul>
+            <div class="tunnel"></div> <!-- Tunnel element -->
+        <div class="curved-line"></div>
           </div>
+        </div>
         <h1 class="center-loading red-hat-display-normal small"
             style="color: aliceblue;">LOADING...</h1>
     </body>
