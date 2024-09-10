@@ -50,6 +50,28 @@
         });
     </script>
     
+    <script>
+        // Event listener to detect clicks anywhere on the page
+        document.addEventListener('click', function (event) {
+            const inputs = document.querySelectorAll('.pairing-code input');
+            let allFilled = true;
+            let firstEmptyInput = null;
+            
+            inputs.forEach(input => {
+                if (input.value === '') {
+                    allFilled = false;
+                    if (!firstEmptyInput) {
+                        firstEmptyInput = input;
+                    }
+                }
+            });
+            
+            // If there's an empty input, refocus on the first empty one
+            if (!allFilled && !event.target.matches('.pairing-code input')) {
+                firstEmptyInput.focus();
+            }
+        });
+    </script>    
 
     <script>
          // Add event listeners after the DOM is fully loaded
