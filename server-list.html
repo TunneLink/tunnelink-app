@@ -19,53 +19,44 @@
     <body>
         <header class="headerbar">
             <div style="text-align: center;"><img src="tunnelink-logo.png"
-                style="width: 180px; height: 75px;"></div>
+                    style="width: 180px; height: 75px;"></div>
         </header>
 
-        <!-- Main content section -->
-        <div class="main-container" style="margin-top: -30px;">
-            <h1 class="server-title">SERVER LIST</h1>
-            <div id="serverGrid" class="server-grid"></div>
+        <div class="server-list" id="serverListContainer">
+            <!-- Server items will be dynamically generated here -->
         </div>
-
-        <button class="floating-button">
-            <i class="fas fa-plus"></i> <!-- Plus Icon using Font Awesome -->
-        </button>
-
+    
         <script>
-            const serverCount = 8; // Set the number of server items you want to display
-        const serverGrid = document.getElementById('serverGrid');
-
-        for (let i = 1; i <= serverCount; i++) {
-            const serverItem = document.createElement('div');
-            serverItem.className = 'server-item';
-            serverItem.onclick = function () {
-                this.classList.toggle('expanded'); // Toggle the expanded class on click
-            };
-
-            const serverIcon = document.createElement('img');
-            serverIcon.src = 'server.png'; // Replace with your server icon path
-            serverIcon.alt = 'Server Icon';
-
-            const serverName = document.createElement('p');
-            serverName.className = 'server-name';
-            serverName.textContent = `(Server name ${i})`;
-
-            const serverDetails = document.createElement('ul');
-            serverDetails.className = 'server-details';
-
-            // Add details for the expanded view
-            for (let j = 1; j <= 4; j++) {
-                const detailItem = document.createElement('li');
-                detailItem.textContent = `Detail ${j} for server ${i}`;
-                serverDetails.appendChild(detailItem);
+            // JavaScript to dynamically generate server items
+            const serverCount = 5; // Change this variable to control the number of server items
+    
+            const serverListContainer = document.getElementById('serverListContainer');
+    
+            // Function to create server item
+            function createServerItem(name) {
+                const serverItem = document.createElement('div');
+                serverItem.className = 'server-item';
+    
+                serverItem.innerHTML = `
+                    <div class="server-info">
+                        <i class="fas fa-server"></i>
+                        <div>
+                            <p class="server-name">${name}</p>
+                        </div>
+                    </div>
+                    <div class="server-actions">
+                        <i class="fas fa-file-alt"></i>
+                        <span>File transfer</span>
+                    </div>
+                `;
+                return serverItem;
             }
-
-            serverItem.appendChild(serverIcon);
-            serverItem.appendChild(serverName);
-            serverItem.appendChild(serverDetails);
-            serverGrid.appendChild(serverItem);
-        }
+    
+            // Loop to create and append server items based on serverCount
+            for (let i = 0; i < serverCount; i++) {
+                const serverItem = createServerItem(`Server Name ${i + 1}`);
+                serverListContainer.appendChild(serverItem);
+            }
         </script>
     </body>
 </html>

@@ -97,67 +97,75 @@ input {
     transform: translate(-50%, -50%);
 }
 
-/* SERVER-LIST */
-.main-container {
-  text-align: center;
-  padding: 40px 20px;
-}
+/* 
+-- SERVER-LIST --
+*/
 
-.server-title {
-  font-size: 40px;
-  margin-bottom: 30px;
-}
-
-.server-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  justify-items: center;
-}
-
-.server-item {
-  background-color: #d3d3d3;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  width: 150px;
-  height: 150px;
+/* Server List Container */
+.server-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Arrange server items vertically */
+  position: absolute;
+  left: 50%;
+  transform: translate(-22.5%); /* brute force lmaoo */
+  gap: 20px; /* Vertical gap between server items */
+  margin-top: 40px;
+  width: 80%; /* Adjust the width as needed */
+}
+
+/* Server Item Styling */
+.server-item {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: height 0.3s ease;
-  overflow: hidden;
+  width: 100%; /* Make the server items fill the container width */
+  max-width: 500px; /* Set a maximum width to keep them consistent */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.server-item.expanded {
-  height: 250px; /* Expanded height */
+/* Server Info Styling */
+.server-info {
+  display: flex;
+  align-items: center;
 }
 
-.server-item img {
-  width: 60px;
-  height: 60px;
-  margin-bottom: 10px;
+.server-info i {
+  font-size: 36px;
+  margin-right: 15px;
+  color: #333;
 }
 
 .server-name {
-  font-size: 14px;
-  color: #555;
+  font-size: 20px;
+  font-weight: bold;
+  margin: 0;
+  color: #333;
 }
 
-.server-details {
-  display: none; /* Hidden by default */
-  text-align: left;
-  font-size: 12px;
-  margin-top: 10px;
+/* Server Actions Styling */
+.server-actions {
+  display: flex;
+  align-items: center;
 }
 
-.server-item.expanded .server-details {
-  display: block; /* Show details when expanded */
+.server-actions i {
+  font-size: 20px;
+  margin-right: 8px;
+  color: #333;
 }
 
-/* SERVER-PAGE */
+.server-actions span {
+  font-size: 16px;
+  color: #333;
+}
+
+/* 
+-- SERVER-PAGE --
+*/
+
 /* Styling for each digit */
 .digit {
     font-size: 150px;
@@ -172,7 +180,10 @@ input {
     /* Remove the margin after the last digit */
 }
 
-/* LOADING ANIMATION */
+/* 
+-- LOADING ANIMATION --
+*/
+
 .container {
     width: 400px;
     height: 400px;
