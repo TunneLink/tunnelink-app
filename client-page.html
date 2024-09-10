@@ -73,6 +73,17 @@
                 getInputValues();
             }
         }
+
+        function checkPairingCode() {
+            const correctCode = "1234"; // Replace with the actual correct code
+            const userInput = pairingCode;
+
+            if (userInput === correctCode) {
+                window.location.href = 'loading-page-client.html'
+            } else {
+                document.getElementById('errorMessage').style.display = 'block';
+            }
+        }
     </script>
 </body>
 </html>

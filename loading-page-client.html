@@ -30,19 +30,8 @@
 
         // Wait for a few seconds before redirecting (optional)
         window.onload = function () {
-            setTimeout(redirectBasedOnCondition, 10000000); // 3000 milliseconds = 3 seconds
+            setTimeout(redirectBasedOnCondition, 3000); // 3000 milliseconds = 3 seconds
         };
-
-        function checkPairingCode() {
-            const correctCode = "1234"; // Replace with the actual correct code
-            const userInput = pairingCode;
-
-            if (userInput === correctCode) {
-                window.location.href = 'loading-page-client.html'
-            } else {
-                document.getElementById('errorMessage').style.display = 'block';
-            }
-        }
         </script>
     </head>
 
