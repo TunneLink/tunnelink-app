@@ -52,6 +52,11 @@
                     inputs[index - 1].focus(); // Move to previous input on backspace if current is empty
                     inputs[index - 1].value = ''; // Clear the previous input
                 }
+
+                // Detect if "Enter" key is pressed, and trigger the storeCode function
+                if (event.key === 'Enter') {
+                    storeCode();
+                }
             });
         });
 
