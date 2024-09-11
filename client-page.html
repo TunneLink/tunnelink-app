@@ -26,26 +26,36 @@
                 <input id="input3" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
                 <input id="input4" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
             </div>
-            <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Incorrect code. Please try again.</p>
+            <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Please input the 4-digit code.</p>
             <button onclick="storeCode()" style="margin-top: 50px; width: 150px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
         </div>
     </div>
-    
+
     <script>
+        // Focus on the first input field when the page loads
         window.onload = function() {
             document.getElementById("input1").focus();
         };
 
-        const input = document.querySelectorAll('.pairing-code input');
+        const inputs = document.querySelectorAll('.pairing-code input');
+
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
-                input.value = input.value.replace(/[^0-9]/g, '');
+                input.value = input.value.replace(/[^0-9]/g, ''); // Only allow numbers
                 if (input.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus();
+                    inputs[index + 1].focus(); // Move to next input if filled
+                }
+            });
+
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && input.value === '' && index > 0) {
+                    inputs[index - 1].focus(); // Move to previous input on backspace if current is empty
+                    inputs[index - 1].value = ''; // Clear the previous input
                 }
             });
         });
 
+        // Get the value of each input field
         function getInputValues() {
             const inputs = document.querySelectorAll('.pairing-code input');
             let pairingCode = '';
@@ -53,91 +63,54 @@
             return pairingCode;
         }
 
-        function storeCode() {
-            const pairingCode = getInputValues();
-            localStorage.setItem('pairingCode', pairingCode); // Store code in localStorage
-            window.location.href = 'loading-page-client.html'; // Redirect to loading page
+        // Check if all inputs are filled
+        function allInputsFilled() {
+            let filled = true;
+            inputs.forEach(input => {
+                if (input.value === '') {
+                    filled = false;
+                }
+            });
+            return filled;
         }
-    </script>
 
-<script>
-    window.onload = function() {
-        // Focus on the first input field when the page loads
-        document.getElementById("input1").focus();
-    };
-
-    // Add event listeners to auto-focus the next field and restrict input to numbers only
-    const inputs = document.querySelectorAll('.pairing-code input');
-    inputs.forEach((input, index) => {
-        input.addEventListener('input', () => {
-            input.value = input.value.replace(/[^0-9]/g, ''); // Only allow numbers
-            if (input.value.length === 1 && index < inputs.length - 1) {
-                inputs[index + 1].focus();
+        // Store code and redirect only if the inputs are fully filled
+        function storeCode() {
+            const errorMessage = document.getElementById('errorMessage');
+            if (allInputsFilled()) {
+                const pairingCode = getInputValues();
+                localStorage.setItem('pairingCode', pairingCode); // Store code in localStorage
+                errorMessage.style.display = 'none'; // Hide error message if previously shown
+                window.location.href = 'loading-page-client.html'; // Redirect to loading page
+            } else {
+                errorMessage.style.display = 'block'; // Show error message
             }
-        });
-    });
-</script>
+        }
 
-<script>
-    // Event listener to detect clicks anywhere on the page
-    document.addEventListener('click', function (event) {
-        const inputs = document.querySelectorAll('.pairing-code input');
-        let allFilled = true;
-        let firstEmptyInput = null;
-        
-        inputs.forEach(input => {
-            if (input.value === '') {
-                allFilled = false;
-                if (!firstEmptyInput) {
-                    firstEmptyInput = input;
+        // Handle clicking outside and refocus the last or first empty input
+        document.addEventListener('click', function (event) {
+            const clickedOutside = !event.target.closest('.pairing-code input');
+            
+            if (clickedOutside) {
+                let firstEmptyInput = null;
+                let lastFilledInput = null;
+
+                inputs.forEach(input => {
+                    if (input.value === '' && !firstEmptyInput) {
+                        firstEmptyInput = input; // Find the first empty input
+                    }
+                    if (input.value !== '') {
+                        lastFilledInput = input; // Find the last filled input
+                    }
+                });
+
+                if (firstEmptyInput) {
+                    firstEmptyInput.focus(); // Focus the first empty input
+                } else if (lastFilledInput) {
+                    lastFilledInput.focus(); // Focus the last filled input
                 }
             }
         });
-        
-        // If there's an empty input, refocus on the first empty one
-        if (!allFilled && !event.target.matches('.pairing-code input')) {
-            firstEmptyInput.focus();
-        }
-    });
-</script>    
-
-<script>
-    // Add event listeners after the DOM is fully loaded
-    document.addEventListener('DOMContentLoaded', function () {
-        const inputs = document.querySelectorAll('.pairing-code input');
-        inputs.forEach((input, index) => {
-            input.addEventListener('input', function () {
-                moveToNext(this, inputs[index + 1]);
-            });
-            input.addEventListener('keydown', function (event) {
-                moveToPrev(event, inputs[index - 1]);
-                detectEnterKey(event);
-            });
-        });
-    });
-    function moveToNext(current, nextField) {
-        if (current.value.length === 1 && nextField) {
-            nextField.focus();
-        }
-    }
-    function moveToPrev(event, prevField) {
-        if (event.key === "Backspace" && event.target.value === "" && prevField) {
-            prevField.focus();
-        }
-    }
-    function getInputValues() {
-        // Get the value of each input field
-        const inputs = document.querySelectorAll('.pairing-code input');
-        let pairingCode = '';
-        inputs.forEach(input => pairingCode += input.value);
-        return pairingCode;
-    }
-    function detectEnterKey(event) {
-        if (event.key === "Enter") {
-            storeCode();
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
