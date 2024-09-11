@@ -84,8 +84,9 @@
             const errorMessage = document.getElementById('errorMessage');
             if (allInputsFilled()) {
                 const pairingCode = getInputValues();
-                localStorage.setItem('pairingCode', pairingCode); // Store code in localStorage
                 errorMessage.style.display = 'none'; // Hide error message if previously shown
+                // Store the pairing code in localStorage
+                localStorage.setItem('pairingCode', pairingCode);
                 window.location.href = 'loading-page-client.html'; // Redirect to loading page
             } else {
                 errorMessage.style.display = 'block'; // Show error message
