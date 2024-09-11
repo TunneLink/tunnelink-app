@@ -1,0 +1,12 @@
+# FRONT-END
+- bikin indicator online offline (nyala/bisa diakses ga)
+- kasih tombol connect di server-actions missal gak connect
+- kasih opsi add another server di server-list
+- kasih opsi delete server buat ngilangin server
+- kalo ada recently connected server, masuknya ke server-list
+- misal semua server diilangin, direct nya ke client-page lagi
+
+# BACK-END
+- info untuk online-offline tiap server
+- bikin tempat buat nyimpen identitas tiap server
+- kasih durasi server bisa connetc terus menerus ke client (or vice-versa) selama enggak komunikasi satu sama lain
