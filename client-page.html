@@ -22,10 +22,10 @@
         <div class="pairing-code-container" style="margin-top: -35px;">
             <div class="pairing-code">
                 <!-- Input fields for pairing code, allowing only numbers -->
-                <input id="input1" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')">
-                <input id="input2" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')">
-                <input id="input3" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')">
-                <input id="input4" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')">
+                <input id="input1" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
+                <input id="input2" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
+                <input id="input3" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
+                <input id="input4" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
             </div>
             <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Incorrect code. Please try again.</p>
             <button onclick="checkPairingCode()" style="margin-top: 50px; width: 150px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
