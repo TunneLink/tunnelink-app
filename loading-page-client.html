@@ -7,26 +7,31 @@
         <title>TunneLink</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+            rel="stylesheet">
         <link rel="stylesheet" href="stylesheet.css">
         <link rel="icon" href="TunneLink logo.png" type="image/png">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-        
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+            rel="stylesheet">
         <script>
-            function redirectBasedOnCondition() {
-                const correctCode = "1234"; // The correct code
-                const userCode = localStorage.getItem('pairingCode'); // Retrieve the stored code
+        // This variable can be set dynamically based on conditions
+        const redirectCondition = true; // Replace this with your actual condition
 
-                if (userCode === correctCode) {
-                    window.location.href = "server-list.html"; // Redirect to server list if correct
-                } else {
-                    window.location.href = "client-page-error-code.html"; // Redirect to error page if wrong
-                }
+        // Function to handle the redirection
+        function redirectBasedOnCondition() {
+            if (redirectCondition) {
+                window.location.href = "server-list.html"; // Replace with the actual page URL
+            } else {
+                window.location.href = "client-page-error-code.html"; // Replace with an alternate page URL if needed
             }
+        }
 
-            window.onload = function () {
-                setTimeout(redirectBasedOnCondition, 3000); // Wait 3 seconds before redirecting
-            };
+        // Wait for a few seconds before redirecting (optional)
+        window.onload = function () {
+            setTimeout(redirectBasedOnCondition, 3000); // 3000 milliseconds = 3 seconds
+        };
         </script>
     </head>
 
@@ -38,10 +43,13 @@
               <div class="carTwo"></div>
               <div class="carThree"></div>
             </div>
+            </ul>
             <div class="tunnel"></div> <!-- Tunnel element -->
-            <div class="curved-line"></div>
+        <div class="curved-line"></div>
+          </div>
         </div>
-        <h1 class="center-loading red-hat-display-normal small" style="color: aliceblue;">LOADING...</h1>
+        <h1 class="center-loading red-hat-display-normal small"
+            style="color: aliceblue;">LOADING...</h1>
     </body>
 
 </html>
