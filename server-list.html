@@ -33,6 +33,27 @@
     
             const serverCount = 5;
             const serverListContainer = document.getElementById('serverListContainer');
+
+           // Function to delete server item
+function deleteServer(trashIcon) {
+    // Get the parent server-item element and remove it from the DOM
+    const serverItem = trashIcon.closest('.server-item');
+    serverItem.remove();
+}
+
+// Function to delete server item with animation
+function deleteServer(trashIcon) {
+    const serverItem = trashIcon.closest('.server-item');
+
+    // Add the fade-out class to trigger animation
+    serverItem.classList.add('fade-out');
+
+    // Wait for the animation to complete before removing the element
+    serverItem.addEventListener('transitionend', function() {
+        serverItem.remove();
+    });
+}
+
     
             // Function to create server item
             function createServerItem(name) {
@@ -53,7 +74,7 @@
                     <div class="server-actions">
                         <i class="fas fa-file-alt"></i>
                         <span>File transfer</span>
-                        <i class="fa-solid fa-trash"></i>
+                        <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
                     </div>
                 `;
                 return serverItem;

@@ -137,6 +137,22 @@ input {
   /* Optional: adds a border for visual clarity */
 }
 
+/* Add this CSS to change the cursor to a pointer on hover */
+.fa-trash {
+  cursor: pointer;
+}
+
+.server-item {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  /* Optional: Initial transform to prepare for the animation */
+  transform: translateY(0);
+}
+
+.server-item.fade-out {
+  opacity: 0;
+  transform: translateY(-10px); /* Moves the element slightly upwards */
+}
+
 .add-server {
   background-color: #e0e0e0;
   border-radius: 8px;
