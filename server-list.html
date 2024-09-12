@@ -25,7 +25,7 @@
         <div class="server-list" id="serverListContainer">
             <!-- Server items will be dynamically generated here -->
         </div>
-    
+
         <script>
             // JavaScript to dynamically generate server items
             const serverCount = 5; // Change this variable to control the number of server items
@@ -61,14 +61,18 @@
                 addServer.className = 'add-server';
     
                 addServer.innerHTML = `
-                    <div class="server-info">
-                        <i class="fa-solid fa-circle-plus"></i>
-                        <div>
+                   <button class="add-server red-hat-display-normal" onclick="redirectClientPage()">
+                        <div class="server-info">
+                            <i class="fa-solid fa-circle-plus"></i>
                             <p class="server-name">Add Server</p>
                         </div>
-                    </div>
+                    </button>
                 `;
                 return addServer;
+            }
+
+            function redirectClientPage() {
+                window.location.href = "client-page.html";
             }
     
             // Loop to create and append server items based on serverCount
@@ -81,8 +85,6 @@
 
             const onlineStatus = true;
             const connectStatus = true;
-
-
         </script>
     </body>
 </html>
