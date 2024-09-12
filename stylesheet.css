@@ -6,95 +6,95 @@ body {
 }
 
 button.list {
-    border-radius: 15px;
-    background-color: #888;
+  border-radius: 15px;
+  background-color: #888;
 }
 
 button.list:hover {
-    background-color: #555;
+  background-color: #555;
 }
 
 button.small {
-    border-radius: 10px;
-    background-color: #ddd;
-    border-color: #28313d;
-    border-width: 5px;
-    color: black;
-    width: 100px;
-    height: 30px;
+  border-radius: 10px;
+  background-color: #ddd;
+  border-color: #28313d;
+  border-width: 5px;
+  color: black;
+  width: 100px;
+  height: 30px;
 }
 
 button.small:hover {
-    background-color: #bbb;
+  background-color: #bbb;
 }
 
 input {
-    background-color: #ececec;
+  background-color: #ececec;
 }
 
 .headerbar {
-    background-color: #28313d;
+  background-color: #28313d;
 }
 
 .red-hat-display-normal {
-    font-family: "Red Hat Display", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Red Hat Display", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .pairing-code {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
 }
 
 .pairing-code input {
-    width: 50px;
-    height: 50px;
-    margin: 0 5px;
-    text-align: center;
-    font-size: 24px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .pairing-code input:focus {
-    border-color: #007bff;
-    outline: none;
+  border-color: #007bff;
+  outline: none;
 }
 
 .pairing-code-container {
-    text-align: center;
-    font-family: Arial, sans-serif;
+  text-align: center;
+  font-family: Arial, sans-serif;
 }
 
 .pairing-code-label {
-    margin-bottom: 15px;
-    font-size: 18px;
-    font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .center {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .center-loading {
-    position: absolute;
-    left: 50%;
-    top: 54%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 54%;
+  transform: translate(-50%, -50%);
 }
 
 .center-animation {
-    position: absolute;
-    left: 50%;
-    top: 46%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
 }
 
 /* 
@@ -102,15 +102,22 @@ input {
 */
 
 /* Server List Container */
+
 .server-list {
   display: flex;
-  flex-direction: column; /* Arrange server items vertically */
+  flex-direction: column;
+  /* Arrange server items vertically */
   position: absolute;
-  left: 50%;
-  transform: translate(-22.5%); /* brute force lmaoo */
-  gap: 20px; /* Vertical gap between server items */
+  gap: 20px;
+  /* Vertical gap between server items */
   margin-top: 40px;
-  width: 80%; /* Adjust the width as needed */
+  width: 80%;
+  /* Adjust the width as needed */
+  max-width: 600px;
+  box-sizing: border-box;
+  padding: 0 15px;
+  left: 50%;
+  transform: translate(-50%);
 }
 
 /* Server Item Styling */
@@ -121,9 +128,40 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%; /* Make the server items fill the container width */
-  max-width: 500px; /* Set a maximum width to keep them consistent */
+  width: 100%;
+  /* Make the server items fill the container width */
+  max-width: 500px;
+  /* Set a maximum width to keep them consistent */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  /* Optional: adds a border for visual clarity */
+}
+
+.add-server {
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* Make the server items fill the container width */
+  max-width: 540px;
+  height: 60px ;
+  /* Set a maximum width to keep them consistent */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  justify-content: center;
+  /* Centers items horizontally */
+  border: 1px solid #ccc;
+  /* Optional: adds a border for visual clarity */
+  cursor: pointer;
+}
+
+.add-server:hover {
+  background-color: #e0e0e0; /* Changes background color on hover */
+}
+
+.add-server i {
+  margin-right: 5px; /* Adds space between the icon and text */
 }
 
 /* Server Info Styling */
@@ -162,22 +200,38 @@ input {
   color: #333;
 }
 
+.circle-green {
+  width: 10px;
+  height: 10px;
+  background-color: rgb(0, 255, 17);
+  border-radius: 50%;
+  margin-right: -55px;
+}
+
+.circle-red {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+  margin-right: -55px;
+}
+
 /* 
 -- SERVER-PAGE --
 */
 
 /* Styling for each digit */
 .digit {
-    font-size: 150px;
-    margin-right: 35px;
-    /* Add margin between digits */
-    display: inline-block;
-    font-family: 'Red Hat Display', sans-serif;
+  font-size: 150px;
+  margin-right: 35px;
+  /* Add margin between digits */
+  display: inline-block;
+  font-family: 'Red Hat Display', sans-serif;
 }
 
 .digit:last-child {
-    margin-right: 0;
-    /* Remove the margin after the last digit */
+  margin-right: 0;
+  /* Remove the margin after the last digit */
 }
 
 /* 
@@ -185,185 +239,215 @@ input {
 */
 
 .container {
-    width: 400px;
-    height: 400px;
-    overflow: hidden;
-  }
-  
-  .track {
-    position: absolute;
-    width: 400px;
-    height: 5px;
-    background-color: black;
-    top: 235px;
-    z-index: 5;
-  }
-  
-  .track:before {
-    content: "";
-    position: absolute;
-    z-index: 5;
-    width: 10px;
-    height: 5px;
-    background-color: #333;
-    top: 4px;
-    box-shadow: 20px 0 #333, -20px 0 #333, -40px 0 #333, -60px 0 #333, -80px 0 #333, 40px 0 #333, 60px 0 #333, 80px 0 #333, 100px 0 #333, 120px 0 #333, 140px 0 #333, 160px 0 #333, 180px 0 #333, 200px 0 #333, 220px 0 #333, 240px 0 #333, 260px 0 #333, 280px 0 #333, 300px 0 #333, 320px 0 #333, 340px 0 #333, 360px 0 #333, 380px 0 #333, 400px 0 #333, 420px 0 #333, 440px 0 #333, -100px 0 #333, -120px 0 #333, -140px 0 #333, 460px 0 #333, 480px 0 #333;
-    animation: moveTrack 1s linear infinite reverse;
-  }
-  
-  .train {
-    position: absolute;
-    z-index: 3;
-    top: 250px;
+  width: 400px;
+  height: 400px;
+  overflow: hidden;
+}
+
+.track {
+  position: absolute;
+  width: 400px;
+  height: 5px;
+  background-color: black;
+  top: 235px;
+  z-index: 5;
+}
+
+.track:before {
+  content: "";
+  position: absolute;
+  z-index: 5;
+  width: 10px;
+  height: 5px;
+  background-color: #333;
+  top: 4px;
+  box-shadow: 20px 0 #333, -20px 0 #333, -40px 0 #333, -60px 0 #333, -80px 0 #333, 40px 0 #333, 60px 0 #333, 80px 0 #333, 100px 0 #333, 120px 0 #333, 140px 0 #333, 160px 0 #333, 180px 0 #333, 200px 0 #333, 220px 0 #333, 240px 0 #333, 260px 0 #333, 280px 0 #333, 300px 0 #333, 320px 0 #333, 340px 0 #333, 360px 0 #333, 380px 0 #333, 400px 0 #333, 420px 0 #333, 440px 0 #333, -100px 0 #333, -120px 0 #333, -140px 0 #333, 460px 0 #333, 480px 0 #333;
+  animation: moveTrack 1s linear infinite reverse;
+}
+
+.train {
+  position: absolute;
+  z-index: 3;
+  top: 250px;
+  left: -300px;
+  z-index: 20;
+  animation: moveTrain 5s linear infinite;
+}
+
+.carOne,
+.carTwo,
+.carThree {
+  height: 30px;
+  background-color: #ffffff;
+  box-shadow: inset 0 -5px hsl(0, 0%, 100%);
+}
+
+.carOne {
+  position: absolute;
+  width: 100px;
+  border-radius: 0 30px 0 0;
+  left: 220px;
+  top: -50px;
+  overflow: hidden;
+}
+
+.carOne:before {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 15px;
+  background-color: #28313d;
+  top: 5px;
+  left: 60px;
+}
+
+.carOne:after {
+  content: "";
+  position: absolute;
+  background-color: #28313d;
+  width: 40px;
+  height: 7px;
+  left: 10px;
+  top: 10px;
+}
+
+.carTwo {
+  position: absolute;
+  width: 90px;
+  left: 125px;
+  top: -50px;
+}
+
+.carTwo:before {
+  content: "";
+  position: absolute;
+  background-color: #28313d;
+  width: 30px;
+  height: 7px;
+  top: 10px;
+  left: 10px;
+  box-shadow: 40px 0px #28313d;
+}
+
+.carTwo:after {
+  position: absolute;
+  content: "";
+  background-color: #210405;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  top: 30px;
+  left: 180px;
+  box-shadow: -20px 0 #210405, -40px 0 #210405, -60px 0 #210405, -80px 0 #210405, -100px 0 #210405, -120px 0 #210405, -140px 0 #210405, -160px 0 #210405, -180px 0 #210405, -200px 0 #210405, -220px 0 #210405, -240px 0 #210405, -260px 0 #210405, -280px 0 #210405;
+}
+
+.carThree {
+  position: absolute;
+  width: 100px;
+  border-radius: 30px 0 0 0;
+  left: 20px;
+  top: -50px;
+  overflow: hidden;
+}
+
+.carThree:before {
+  content: "";
+  position: absolute;
+  background-color: #28313d;
+  width: 40px;
+  height: 15px;
+  top: 5px;
+}
+
+.carThree:after {
+  content: "";
+  position: absolute;
+  background-color: #28313d;
+  width: 40px;
+  height: 7px;
+  top: 10px;
+  left: 50px;
+}
+
+.tunnel {
+  position: absolute;
+  width: 50px;
+  height: 70px;
+  background-color: black;
+  border-radius: 100px 100px 00px 00px;
+  top: 170px;
+  left: 350px;
+  z-index: 1;
+}
+
+.curved-line {
+  position: absolute;
+  width: 45px;
+  height: 64px;
+  /* Half the width for a half-circle */
+  border: 8px solid gray;
+  /* Thickness of the line */
+  border-bottom: none;
+  /* Remove the bottom border to leave only the top curve */
+  border-radius: 100px 100px 0 0;
+  /* Creates the curved half-circle effect */
+  background-color: transparent;
+  top: 166px;
+  left: 345px;
+}
+
+@keyframes moveTrain {
+  from {
     left: -300px;
-    z-index: 20;
-    animation: moveTrain 5s linear infinite;
-  }
-  
-  .carOne, .carTwo, .carThree {
-    height: 30px;
-    background-color: #ffffff;
-    box-shadow: inset 0 -5px hsl(0, 0%, 100%);
-  }
-  
-  .carOne {
-    position: absolute;
-    width: 100px;
-    border-radius: 0 30px 0 0;
-    left: 220px;
-    top: -50px;
-    overflow: hidden;
-  }
-  
-  .carOne:before {
-    content: "";
-    position: absolute;
-    width: 40px;
-    height: 15px;
-    background-color: #28313d;
-    top: 5px;
-    left: 60px;
-  }
-  
-  .carOne:after {
-    content: "";
-    position: absolute;
-    background-color: #28313d;
-    width: 40px;
-    height: 7px;
-    left: 10px;
-    top: 10px;
-  }
-  
-  .carTwo {
-    position: absolute;
-    width: 90px;
-    left: 125px;
-    top: -50px;
-  }
-  
-  .carTwo:before {
-    content: "";
-    position: absolute;
-    background-color: #28313d;
-    width: 30px;
-    height: 7px;
-    top: 10px;
-    left: 10px;
-    box-shadow: 40px 0px #28313d;
-  }
-  
-  .carTwo:after {
-    position: absolute;
-    content: "";
-    background-color: #210405;
-    border-radius: 50%;
-    width: 10px;
-    height: 10px;
-    top: 30px;
-    left: 180px;
-    box-shadow: -20px 0 #210405, -40px 0 #210405, -60px 0 #210405, -80px 0 #210405, -100px 0 #210405, -120px 0 #210405, -140px 0 #210405, -160px 0 #210405, -180px 0 #210405, -200px 0 #210405, -220px 0 #210405, -240px 0 #210405, -260px 0 #210405, -280px 0 #210405;
-  }
-  
-  .carThree {
-    position: absolute;
-    width: 100px;
-    border-radius: 30px 0 0 0;
-    left: 20px;
-    top: -50px;
-    overflow: hidden;
-  }
-  
-  .carThree:before {
-    content: "";
-    position: absolute;
-    background-color: #28313d;
-    width: 40px;
-    height: 15px;
-    top: 5px;
-  }
-  
-  .carThree:after {
-    content: "";
-    position: absolute;
-    background-color: #28313d;
-    width: 40px;
-    height: 7px;
-    top: 10px;
-    left: 50px;
-  }
-  
-  .tunnel {
-    position: absolute;
-    width: 50px;
-    height: 70px;
-    background-color: black;
-    border-radius: 100px 100px 00px 00px;
-    top: 170px;
-    left: 350px;
-    z-index: 1;
-  }
-  .curved-line {
-    position: absolute;
-    width: 45px;
-    height: 64px; /* Half the width for a half-circle */
-    border: 8px solid gray; /* Thickness of the line */
-    border-bottom: none; /* Remove the bottom border to leave only the top curve */
-    border-radius: 100px 100px 0 0; /* Creates the curved half-circle effect */
-    background-color: transparent;
-    top: 166px;
-    left: 345px;
-  }
-  
-  @keyframes moveTrain {
-    from { left: -300px; }
-    to { left: 500px; }
   }
 
-  /* FLOATING BUTTON */
-  .floating-button {
-    position: fixed; /* Fixed position to float over content */
-    bottom: 20px; /* Distance from the bottom of the screen */
-    right: 20px; /* Distance from the right of the screen */
-    width: 50px; /* Width of the button */
-    height: 50px; /* Height of the button */
-    border-radius: 50%; /* Make the button round */
-    background-color: #28313d; /* Button color */
-    color: white; /* Icon color */
-    border: none; /* Remove border */
-    display: flex; /* Align icon in the center */
-    justify-content: center; /* Align icon in the center */
-    align-items: center; /* Align icon in the center */
-    font-size: 24px; /* Icon size */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Add some shadow */
-    cursor: pointer; /* Change cursor on hover */
-    transition: background-color 0.3s; /* Smooth transition for background color */
+  to {
+    left: 500px;
+  }
+}
+
+/* FLOATING BUTTON */
+.floating-button {
+  position: fixed;
+  /* Fixed position to float over content */
+  bottom: 20px;
+  /* Distance from the bottom of the screen */
+  right: 20px;
+  /* Distance from the right of the screen */
+  width: 50px;
+  /* Width of the button */
+  height: 50px;
+  /* Height of the button */
+  border-radius: 50%;
+  /* Make the button round */
+  background-color: #28313d;
+  /* Button color */
+  color: white;
+  /* Icon color */
+  border: none;
+  /* Remove border */
+  display: flex;
+  /* Align icon in the center */
+  justify-content: center;
+  /* Align icon in the center */
+  align-items: center;
+  /* Align icon in the center */
+  font-size: 24px;
+  /* Icon size */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  /* Add some shadow */
+  cursor: pointer;
+  /* Change cursor on hover */
+  transition: background-color 0.3s;
+  /* Smooth transition for background color */
 }
 
 .floating-button:hover {
-    background-color: #003670; /* Darker color on hover */
+  background-color: #003670;
+  /* Darker color on hover */
 }
 
 .no-cursor {
-  caret-color: transparent; /* Hides the blinking cursor */
+  caret-color: transparent;
+  /* Hides the blinking cursor */
 }

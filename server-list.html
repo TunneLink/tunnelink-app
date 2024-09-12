@@ -38,6 +38,7 @@
                 serverItem.className = 'server-item';
     
                 serverItem.innerHTML = `
+                    <div class="circle-green"></div>
                     <div class="server-info">
                         <i class="fas fa-server"></i>
                         <div>
@@ -54,12 +55,34 @@
                 `;
                 return serverItem;
             }
+
+            function createAddServer() {
+                const addServer = document.createElement('div');
+                addServer.className = 'add-server';
+    
+                addServer.innerHTML = `
+                    <div class="server-info">
+                        <i class="fa-solid fa-circle-plus"></i>
+                        <div>
+                            <p class="server-name">Add Server</p>
+                        </div>
+                    </div>
+                `;
+                return addServer;
+            }
     
             // Loop to create and append server items based on serverCount
             for (let i = 0; i < serverCount; i++) {
                 const serverItem = createServerItem(`Server Name ${i + 1}`);
                 serverListContainer.appendChild(serverItem);
             }
+            const addServer = createAddServer();
+            serverListContainer.appendChild(addServer);
+
+            const onlineStatus = true;
+            const connectStatus = true;
+
+
         </script>
     </body>
 </html>
