@@ -26,41 +26,41 @@
                 <input id="input3" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
                 <input id="input4" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
             </div>
-            <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Please input the 4-digit code.</p>
-            <button onclick="storeCode()" style="margin-top: 50px; width: 150px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
+            <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Please input the 4 digits code.</p>
+            <button onclick="checkPairingCode()" style="margin-top: 50px; width: 150px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
         </div>
     </div>
 
     <script>
-        // Focus on the first input field when the page loads
         window.onload = function() {
+            // Focus on the first input field when the page loads
             document.getElementById("input1").focus();
         };
 
+        // Add event listeners to auto-focus the next field and restrict input to numbers only
         const inputs = document.querySelectorAll('.pairing-code input');
-
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
                 input.value = input.value.replace(/[^0-9]/g, ''); // Only allow numbers
                 if (input.value.length === 1 && index < inputs.length - 1) {
-                    inputs[index + 1].focus(); // Move to next input if filled
+                    inputs[index + 1].focus();
                 }
             });
 
+            // Enable backspace functionality
             input.addEventListener('keydown', (event) => {
                 if (event.key === 'Backspace' && input.value === '' && index > 0) {
-                    inputs[index - 1].focus(); // Move to previous input on backspace if current is empty
-                    inputs[index - 1].value = ''; // Clear the previous input
+                    inputs[index - 1].focus(); // Focus on the previous input box
                 }
 
-                // Detect if "Enter" key is pressed, and trigger the storeCode function
+                // Submit form on Enter keypress if all inputs are filled
                 if (event.key === 'Enter') {
-                    storeCode();
+                    checkPairingCode(); // Trigger the submit function
                 }
             });
         });
 
-        // Get the value of each input field
+        // Get input values from all boxes
         function getInputValues() {
             const inputs = document.querySelectorAll('.pairing-code input');
             let pairingCode = '';
@@ -79,20 +79,21 @@
             return filled;
         }
 
-        // Store code and redirect only if the inputs are fully filled
-        function storeCode() {
+        // Validate and submit pairing code
+        function checkPairingCode() {
             const errorMessage = document.getElementById('errorMessage');
             if (allInputsFilled()) {
                 const pairingCode = getInputValues();
-                localStorage.setItem('pairingCode', pairingCode); // Store code in localStorage
                 errorMessage.style.display = 'none'; // Hide error message if previously shown
+                // Store the pairing code in localStorage
+                localStorage.setItem('pairingCode', pairingCode);
                 window.location.href = 'loading-page-client.html'; // Redirect to loading page
             } else {
                 errorMessage.style.display = 'block'; // Show error message
             }
         }
 
-        // Handle clicking outside and refocus the last or first empty input
+        // Event listener to refocus on empty input if clicked outside
         document.addEventListener('click', function (event) {
             const clickedOutside = !event.target.closest('.pairing-code input');
             
@@ -117,5 +118,6 @@
             }
         });
     </script>
+
 </body>
 </html>
