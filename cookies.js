@@ -24,3 +24,34 @@ function getCookie(name) {
 function deleteCookie(name) {
     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 }
+
+function checkCookieExists(cookieName) {
+    // Get all cookies as a single string
+    const cookies = document.cookie;
+
+    // Use regular expression to search for the cookie by name
+    const cookiePattern = new RegExp('(^|; )' + encodeURIComponent(cookieName) + '='); 
+    return cookiePattern.test(cookies); // Returns true if cookie exists, false otherwise
+}
+
+function getCookieValue(cookieName) {
+    const cookies = document.cookie.split('; ').find(row => row.startsWith(cookieName + '='));
+    return cookies ? decodeURIComponent(cookies.split('=')[1]) : null;
+}
+
+function increaseCookieValue(cookieName, increment) {
+    let value = getCookieValue(cookieName);
+    if (value === null) {
+        // Cookie does not exist; initialize with 0 if needed
+        value = 0;
+    } else {
+        // Parse value to integer
+        value = parseInt(value, 10);
+    }
+
+    // Increase value
+    value += increment;
+
+    // Set the updated value back to the cookie
+    document.cookie = `${cookieName}=${encodeURIComponent(value)}; path=/`;
+}
