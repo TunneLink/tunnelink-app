@@ -187,11 +187,12 @@ input {
 .server-actions {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .server-actions i {
   font-size: 20px;
-  margin-right: 8px;
+  margin-right: 5px;
   color: #333;
 }
 
