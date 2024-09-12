@@ -1,10 +1,11 @@
 # FRONT-END
 - bikin indicator online offline (nyala/bisa diakses ga)
-- kasih tombol connect di server-actions missal gak connect
+- kasih tombol connect di server-actions misal gak connect
 - kasih opsi add another server di server-list
 - kasih opsi delete server buat ngilangin server
-- kalo ada recently connected server, masuknya ke server-list
+- kalo ada server yang udah pernah connect, masuknya ke server-list
 - misal semua server diilangin, direct nya ke client-page lagi
+- habis input pairing code, munculin text yang muncul di client dan server  buat di cocokin
 
 # BACK-END
 - info untuk online-offline tiap server
