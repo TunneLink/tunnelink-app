@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -14,12 +15,16 @@
         <link
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
             rel="stylesheet">
+        <style>
+            /* Add CSS here as provided above */
+        </style>
     </head>
 
     <body>
         <header class="headerbar">
-            <div style="text-align: center;"><img src="tunnelink-logo.png"
-                    style="width: 180px; height: 75px;"></div>
+            <div style="text-align: center;">
+                <img src="tunnelink-logo.png" style="width: 180px; height: 75px;">
+            </div>
         </header>
 
         <div class="server-list" id="serverListContainer">
@@ -29,14 +34,13 @@
         <script>
             // JavaScript to dynamically generate server items
             const serverCount = 5; // Change this variable to control the number of server items
-    
             const serverListContainer = document.getElementById('serverListContainer');
-    
+
             // Function to create server item
             function createServerItem(name) {
                 const serverItem = document.createElement('div');
                 serverItem.className = 'server-item';
-    
+
                 serverItem.innerHTML = `
                     <div class="server-info">
                         <i class="fas fa-server"></i>
@@ -45,16 +49,27 @@
                         </div>
                     </div>
                     <div class="server-actions">
-                        <span> <b>|</b> </span>
-                    </div>
-                    <div class="server-actions">
                         <i class="fas fa-file-alt"></i>
                         <span>File transfer</span>
                     </div>
+                    <div class="delete-bin">
+                        <i class="fa-solid fa-trash delete-icon"></i>
+                    </div>
                 `;
+
+                // Add event listener for the delete icon with animation
+                serverItem.querySelector('.delete-icon').addEventListener('click', function () {
+                    serverItem.classList.add('shrink'); // Add the shrinking class for animation
+
+                    // After animation ends, remove the element
+                    serverItem.addEventListener('transitionend', function () {
+                        serverItem.remove(); // Completely remove after animation
+                    });
+                });
+
                 return serverItem;
             }
-    
+
             // Loop to create and append server items based on serverCount
             for (let i = 0; i < serverCount; i++) {
                 const serverItem = createServerItem(`Server Name ${i + 1}`);
