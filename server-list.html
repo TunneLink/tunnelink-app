@@ -72,29 +72,27 @@
             serverItem.className = 'server-item';
 
             const statusClass = isConnected ? 'circle-green' : 'circle-red'; // Green if connected, red if not
+             const actionText = isConnected ? 'File transfer' : 'Start connection'; // Change text based on connection status
+             serverItem.innerHTML = `
+        <div class="${statusClass}"></div>
+        <div class="server-info">
+            <i class="fas fa-server"></i>
+            <div>
+                <p class="server-name">${name}</p>
+            </div>
+        </div>
+        <div class="server-actions">
+            <span> <b>|</b> </span>
+        </div>
+        <div class="server-actions">
+            <i class="fas fa-file-alt"></i>
+            <span>${actionText}</span>
+            <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
+        </div>
+    `;
+    return serverItem;
+}
 
-            serverItem.innerHTML = `
-                <div class="${statusClass}"></div>
-                <div class="server-info">
-                    <i class="fas fa-server"></i>
-                    <div>
-                        <p class="server-name">${name}</p>
-                    </div>
-                </div>
-                <div class="server-actions">
-                    <span> <b>|</b> </span>
-                </div>
-                <div class="server-actions">
-                    <i class="fas fa-file-alt"></i>
-                    <span>File transfer</span>
-                </div>
-                <div>
-                    <i class="fa-solid fa-trash enclosed-trash" onclick="deleteServer(this)"></i>
-                </div>    
-            `;  
-
-            return serverItem;
-        }
 
         function createAddServer() {
             const addServer = document.createElement('div');
