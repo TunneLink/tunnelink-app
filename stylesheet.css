@@ -181,7 +181,7 @@ input {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 500px;  /* Keep it aligned with server items */
+  max-width: 520px;  /* Keep it aligned with server items */
   height: 60px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
