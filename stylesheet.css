@@ -468,3 +468,26 @@ input {
   caret-color: transparent;
   /* Hides the blinking cursor */
 }
+
+.server-item .circle-green {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: green; /* Default to green */
+  margin-right: 10px;
+}
+
+.server-item .circle-red {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: red; /* Red color */
+  margin-right: 1px;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s;
+}
