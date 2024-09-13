@@ -22,63 +22,72 @@
                 style="width: 180px; height: 75px;"></div>
     </header>
 
-    <div style="text-align: center; margin-top: 125px;">
+    <div style="text-align: center; margin-top: 180px;">
         <h2 id="statusTitle" class="red-hat-display-normal small"
-            style="font-size: 25px;">SERVER PAIRING CODE:</h2>
-        <div id="pairingCode"></div> <!-- Placeholder code -->
+            style="font-size: 25px;">Compare this key with the server device!</h2>
+        <div id="publicKey"></div> <!--Display public key-->
     </div>
 
     <script>
         // Helper function to decode Base64 to a Uint8Array (binary)
-function base64ToUint8Array(base64) {
-    const binaryString = atob(base64); // Decode Base64 string to binary string
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
+        function base64ToUint8Array(base64) {
+            const binaryString = atob(base64); // Decode Base64 string to binary string
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
 
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
+            for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+            }
 
-    return bytes;
-}
+            return bytes;
+        }
 
-// Function to compute CRC-16 (using the CCITT-FALSE polynomial)
-function computeCRC16(buffer) {
-    let crc = 0xFFFF; // Initial CRC value
-    const polynomial = 0x1021; // CRC-16-CCITT polynomial
+        // Function to compute CRC-16 (using the CCITT-FALSE polynomial)
+        function computeCRC16(buffer) {
+            let crc = 0xFFFF; // Initial CRC value
+            const polynomial = 0x1021; // CRC-16-CCITT polynomial
 
-    for (let byte of buffer) {
-        for (let i = 0; i < 8; i++) {
-            const bit = ((byte >> (7 - i)) & 1) === 1;
-            const c15 = ((crc >> 15) & 1) === 1;
-            crc <<= 1;
-            if (c15 !== bit) {
-                crc ^= polynomial;
+            for (let byte of buffer) {
+                for (let i = 0; i < 8; i++) {
+                const bit = ((byte >> (7 - i)) & 1) === 1;
+                const c15 = ((crc >> 15) & 1) === 1;
+                crc <<= 1;
+                if (c15 !== bit) {
+                    crc ^= polynomial;
+                    }
+                }
+            }
+
+            crc &= 0xFFFF; // Ensure 16-bit value
+            return crc;
+        }
+
+        // Convert a number to a hexadecimal string
+        function toHexadecimal(number) {
+            return number.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        // Main function to decode Base64, compute CRC-16, and convert to hexadecimal
+        function processBase64String(base64String) {
+            const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
+            const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
+            const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
+            return hexResult;
+        }
+        
+        function displayPublicKey() {
+            const publicKeyElement = document.getElementById('publicKey');
+            const publicKey = processBase64String("SGVsbG8gV29ybGQ=");
+
+            // Create spans for each digit to control spacing
+            for (let i = 0; i < publicKey.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = publicKey[i];
+                span.className = 'digit'; // Apply styles to each digit
+                publicKeyElement.appendChild(span);
             }
         }
-    }
 
-    crc &= 0xFFFF; // Ensure 16-bit value
-    return crc;
-}
-
-// Convert a number to a hexadecimal string
-function toHexadecimal(number) {
-    return number.toString(16).toUpperCase().padStart(4, '0');
-}
-
-// Main function to decode Base64, compute CRC-16, and convert to hexadecimal
-function processBase64String(base64String) {
-    const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
-    const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
-    const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
-    return hexResult;
-}
-
-// Example usage
-const base64String = "SGVsbG8gV29ybGQ="; // Example Base64 string (Hello World)
-const hexCRC16 = processBase64String(base64String);
-console.log(hexCRC16); // Output: E2C5
-
+        displayPublicKey();        
     </script>
 </body>

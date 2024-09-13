@@ -5,76 +5,127 @@
     <title>TunneLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
-
-    <style>
-
-    </style>
 </head>
 
 <body>
     <header class="headerbar">
         <div style="text-align: center;"><img src="tunnelink-logo.png"
-            style="width: 180px; height: 75px;"></div>
+                style="width: 180px; height: 75px;"></div>
     </header>
 
-    <div style="text-align: center; margin-top: 125px;">
-        <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">Compare this key with the one in </h2>
-        <div id="pairingCode"></div> <!-- Placeholder code -->
+    <div style="text-align: center; margin-top: 160px;">
+        <h2 id="statusTitle" class="red-hat-display-normal small"
+            style="font-size: 25px; margin-bottom: -10px;">Compare this key with the client device!</h2>
+        <div id="publicKey"></div> <!--Display public key-->
+        <h2 id="statusTitle" class="red-hat-display-normal small"
+            style="font-size: 20px;">Is it the same?</h2>
+        <div style="display: flex; flex-direction: row; gap: 30px; margin-top: 15px; justify-content: center;">
+            <button id="yuhBtn" class="red-hat-display-normal small" style="width: 100px; height: 40px;">Yuh</button>
+            <button id="nahBtn" class="red-hat-display-normal small" style="width: 100px; height: 40px;">Nah</button>
+        </div>
     </div>
 
     <script>
-        // Helper function to decode Base64 to a Uint8Array (binary)
-function base64ToUint8Array(base64) {
-    const binaryString = atob(base64); // Decode Base64 string to binary string
-    const len = binaryString.length;
-    const bytes = new Uint8Array(len);
+        // Function to decode Base64 to a Uint8Array (binary)
+        function base64ToUint8Array(base64) {
+            const binaryString = atob(base64); // Decode Base64 string to binary string
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
 
-    for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-    }
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
 
-    return bytes;
-}
+            return bytes;
+        }
 
-// Function to compute CRC-16 (using the CCITT-FALSE polynomial)
-function computeCRC16(buffer) {
-    let crc = 0xFFFF; // Initial CRC value
-    const polynomial = 0x1021; // CRC-16-CCITT polynomial
+        // Function to compute CRC-16 (using the CCITT-FALSE polynomial)
+        function computeCRC16(buffer) {
+            let crc = 0xFFFF; // Initial CRC value
+            const polynomial = 0x1021; // CRC-16-CCITT polynomial
 
-    for (let byte of buffer) {
-        for (let i = 0; i < 8; i++) {
-            const bit = ((byte >> (7 - i)) & 1) === 1;
-            const c15 = ((crc >> 15) & 1) === 1;
-            crc <<= 1;
-            if (c15 !== bit) {
-                crc ^= polynomial;
+            for (let byte of buffer) {
+                for (let i = 0; i < 8; i++) {
+                    const bit = ((byte >> (7 - i)) & 1) === 1;
+                    const c15 = ((crc >> 15) & 1) === 1;
+                    crc <<= 1;
+                    if (c15 !== bit) {
+                        crc ^= polynomial;
+                    }
+                }
+            }
+
+            crc &= 0xFFFF; // Ensure 16-bit value
+            return crc;
+        }
+
+        // Convert a number to a hexadecimal string
+        function toHexadecimal(number) {
+            return number.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        // Function to fetch the base64 string from the backend
+        async function fetchBase64String() {
+            try {
+                const response = await fetch('/api/get-base64'); // Replace with your backend endpoint
+                const data = await response.json();
+                return data.base64String; // Adjust this if your backend sends data in a different format
+            } catch (error) {
+                console.error('Error fetching base64 string:', error);
             }
         }
-    }
 
-    crc &= 0xFFFF; // Ensure 16-bit value
-    return crc;
-}
+        // Main function to decode Base64, compute CRC-16, and convert to hexadecimal
+        function processBase64String(base64String) {
+            const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
+            const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
+            const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
+            return hexResult;
+        }
 
-// Convert a number to a hexadecimal string
-function toHexadecimal(number) {
-    return number.toString(16).toUpperCase().padStart(4, '0');
-}
+        // Function to display the public key
+        async function displayPublicKey() {
+            const publicKeyElement = document.getElementById('publicKey');
+            const base64String = await fetchBase64String(); // Fetch Base64 string from backend
+            const publicKey = processBase64String(base64String);
 
-// Main function to decode Base64, compute CRC-16, and convert to hexadecimal
-function processBase64String(base64String) {
-    const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
-    const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
-    const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
-    return hexResult;
-}
+            // Create spans for each digit to control spacing
+            for (let i = 0; i < publicKey.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = publicKey[i];
+                span.className = 'digit'; // Apply styles to each digit
+                publicKeyElement.appendChild(span);
+            }
+        }
 
-// Example usage
-const base64String = "SGVsbG8gV29ybGQ="; // Example Base64 string (Hello World)
-const hexCRC16 = processBase64String(base64String);
-console.log(hexCRC16); // Output: E2C5
+        // Function to send a signal to the backend
+        async function sendSignalToBackend(signal) {
+            try {
+                await fetch('/api/send-signal', { // Replace with your backend endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ signal: signal })
+                });
+                console.log(`Signal sent: ${signal}`)
+                window.location.href = "server-page-success.html"
+                ;
+            } catch (error) {
+                console.error('Error sending signal:', error);
+            }
+        }
+
+        // Event listeners for button clicks
+        document.getElementById('yuhBtn').addEventListener('click', () => sendSignalToBackend('yuh'));
+        document.getElementById('nahBtn').addEventListener('click', () => sendSignalToBackend('nah'));
+
+        // Initialize
+        displayPublicKey();
     </script>
 </body>

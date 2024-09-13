@@ -55,25 +55,6 @@
                 span.className = 'digit'; // Apply styles to each digit
                 pairingCodeElement.appendChild(span);
             }
-
-            // Check for successful connection
-            checkConnectionStatus().then((isConnected) => {
-                if (isConnected) {
-                    displayConnectionSuccess();
-                }
-            });
-        }
-
-        // Update the UI to show connection success
-        function displayConnectionSuccess() {
-            const statusTitle = document.getElementById('statusTitle');
-            const pairingCodeElement = document.getElementById('pairingCode');
-
-            // Change the title and hide the pairing code
-            statusTitle.textContent = "You have been connected!";
-            statusTitle.style.fontSize = "72px";
-            statusTitle.style.marginTop = "225px";
-            pairingCodeElement.style.display = 'none';  // Hide the pairing code once connected
         }
 
         // Display the server code when the page loads
