@@ -106,18 +106,14 @@ input {
 .server-list {
   display: flex;
   flex-direction: column;
-  /* Arrange server items vertically */
-  position: absolute;
+  justify-content: center;  /* Center items horizontally */
+  align-items: center;       /* Center items vertically */
   gap: 20px;
-  /* Vertical gap between server items */
   margin-top: 40px;
-  width: 80%;
-  /* Adjust the width as needed */
-  max-width: 600px;
+  width: 100%;              /* Make sure the list takes the full width */
+  max-width: 100%;          /* Ensure the server list doesn't exceed the container width */
   box-sizing: border-box;
   padding: 0 15px;
-  left: 50%;
-  transform: translate(-50%);
 }
 
 /* Add this CSS to style the trash bin differently */
@@ -135,7 +131,6 @@ input {
   border-color: #aaa;        /* Darken the border on hover */
 }
 
-/* Server Item Styling */
 .server-item {
   background-color: #e0e0e0;
   border-radius: 8px;
@@ -144,13 +139,10 @@ input {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  /* Make the server items fill the container width */
-  max-width: 500px;
-  /* Set a maximum width to keep them consistent */
+  max-width: 500px;          /* Max width for the server items */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
   transition: opacity 0.5s ease, transform 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease;
-  /* Optional: adds a border for visual clarity */
 }
 
 /* Add this CSS to change the cursor to a pointer on hover */
@@ -184,19 +176,15 @@ input {
 .add-server {
   background-color: #e0e0e0;
   border-radius: 8px;
-  padding: 0px;
+  padding: 0;
   display: flex;
   align-items: center;
-  width: 100%;
-  /* Make the server items fill the container width */
-  max-width: 521px;
-  height: 60px ;
-  /* Set a maximum width to keep them consistent */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   justify-content: center;
-  /* Centers items horizontally */
+  width: 100%;
+  max-width: 500px;  /* Keep it aligned with server items */
+  height: 60px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
-  /* Optional: adds a border for visual clarity */
   cursor: pointer;
 }
 
