@@ -21,62 +21,60 @@
     </header>
 
     <div style="text-align: center; margin-top: 125px;">
-        <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">SERVER PAIRING CODE:</h2>
+        <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">Compare this key with the one in </h2>
         <div id="pairingCode"></div> <!-- Placeholder code -->
     </div>
 
     <script>
-        // Example of generating a random server code (4 digits)
-        function generateServerCode() {
-            // Simulating a 4-digit code (you can replace this with an actual server-side value)
-            const serverCode = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
-            return serverCode;
-        }
+        // Helper function to decode Base64 to a Uint8Array (binary)
+function base64ToUint8Array(base64) {
+    const binaryString = atob(base64); // Decode Base64 string to binary string
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
 
-        // Simulated function to check if connection is successful
-        function checkConnectionStatus() {
-            // Simulate checking from server; here we'll just use a random result
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(true);  // Simulate success (change to false for failure)
-                }, 3000);  // Simulate server response time (3 seconds)
-            });
-        }
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+    }
 
-        // Display the server code on load
-        function displayServerCode() {
-            const pairingCodeElement = document.getElementById('pairingCode');
-            const generatedCode = generateServerCode().toString();
+    return bytes;
+}
 
-            // Create spans for each digit to control spacing
-            for (let i = 0; i < generatedCode.length; i++) {
-                const span = document.createElement('span');
-                span.textContent = generatedCode[i];
-                span.className = 'digit'; // Apply styles to each digit
-                pairingCodeElement.appendChild(span);
+// Function to compute CRC-16 (using the CCITT-FALSE polynomial)
+function computeCRC16(buffer) {
+    let crc = 0xFFFF; // Initial CRC value
+    const polynomial = 0x1021; // CRC-16-CCITT polynomial
+
+    for (let byte of buffer) {
+        for (let i = 0; i < 8; i++) {
+            const bit = ((byte >> (7 - i)) & 1) === 1;
+            const c15 = ((crc >> 15) & 1) === 1;
+            crc <<= 1;
+            if (c15 !== bit) {
+                crc ^= polynomial;
             }
-
-            // Check for successful connection
-            checkConnectionStatus().then((isConnected) => {
-                if (isConnected) {
-                    displayConnectionSuccess();
-                }
-            });
         }
+    }
 
-        // Update the UI to show connection success
-        function displayConnectionSuccess() {
-            const statusTitle = document.getElementById('statusTitle');
-            const pairingCodeElement = document.getElementById('pairingCode');
+    crc &= 0xFFFF; // Ensure 16-bit value
+    return crc;
+}
 
-            // Change the title and hide the pairing code
-            statusTitle.textContent = "You have been connected!";
-            statusTitle.style.fontSize = "72px";
-            statusTitle.style.marginTop = "225px";
-            pairingCodeElement.style.display = 'none';  // Hide the pairing code once connected
-        }
+// Convert a number to a hexadecimal string
+function toHexadecimal(number) {
+    return number.toString(16).toUpperCase().padStart(4, '0');
+}
 
-        // Display the server code when the page loads
-        window.onload = displayServerCode;
+// Main function to decode Base64, compute CRC-16, and convert to hexadecimal
+function processBase64String(base64String) {
+    const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
+    const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
+    const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
+    return hexResult;
+}
+
+// Example usage
+const base64String = "SGVsbG8gV29ybGQ="; // Example Base64 string (Hello World)
+const hexCRC16 = processBase64String(base64String);
+console.log(hexCRC16); // Output: E2C5
     </script>
 </body>

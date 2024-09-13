@@ -55,3 +55,26 @@ function increaseCookieValue(cookieName, increment) {
     // Set the updated value back to the cookie
     document.cookie = `${cookieName}=${encodeURIComponent(value)}; path=/`;
 }
+
+// Display the server list in an ordered list (HTML)
+function displayServerList() {
+    const serverListContainer = document.getElementById('serverList');
+    const existingServers = getCookie('connectedServers');
+    let serversArray = existingServers ? JSON.parse(existingServers) : [];
+
+    // Clear previous list content
+    serverListContainer.innerHTML = '';
+
+    // Generate list items
+    serversArray.forEach((server, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Server Name: ${server.name}, Public Key: ${server.key}`;
+        serverListContainer.appendChild(listItem);
+    });
+}
+
+// Example Usage: Call this function to save server info after connecting
+saveServerInfo('My Server', 'PublicKey1234');
+
+// Call this function to display the server list in the page
+displayServerList();
