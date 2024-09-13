@@ -500,10 +500,29 @@ input {
   border-radius: 50%;
   display: inline-block;
   background-color: red; /* Red color */
-  margin-right: 1px;
+  margin-right: 10px;
 }
 
 .fade-out {
   opacity: 0;
   transition: opacity 0.5s;
+}
+
+.server-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Reduced gap */
+  padding: 5px;
+}
+
+.server-actions span {
+  display: inline-block;
+  width: 100px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.server-actions span:nth-child(2) { /* Target the middle line */
+  margin-right: 20px; /* Fine-tune the spacing */
 }
