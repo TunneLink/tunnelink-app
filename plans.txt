@@ -3,17 +3,23 @@
 - kasih tombol connect di server-actions misal gak connect (DONE)
 - kasih opsi add another server di server-list (DONE)
 - kasih opsi delete server buat ngilangin server (DONE)
-- kalo ada server yang udah pernah connect, masuknya ke server-list  
-- habis input pairing code, munculin text yang muncul di client dan server buat di cocokin
-- Bikin page kalau client ditolak oleh server (error or smth)
+- habis input pairing code, munculin text yang muncul di client dan server buat di cocokin (DONE)
+- Bikin page kalau client ditolak oleh server (error or smth) (Falah)
+- Sambungin inputs ke cookies (Umar dan Bilal)
+- SYNC SEMUA FITUR DENGAN BACK-END (semua)
 
-# BACK-END
+
+# BACK-END (Arya the goat)
 - info untuk online-offline tiap server
 - bikin tempat buat nyimpen identitas tiap server
 - kasih durasi server bisa connetc terus menerus ke client (or vice-versa) selama enggak komunikasi satu sama lain
 
 # DEADLINE
 *FRONT END
+^Pake kalau client ditolak oleh server MINGGU PAGI (INSYAALLAH) @FALAH
+
+*COOKIES
+MINGGU MALAM @UMAR, @AZKABIL
 
 
 *POWERPOINT DAN GOOGLE FORM
