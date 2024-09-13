@@ -1,13 +1,23 @@
 # FRONT-END
-- bikin indicator online offline (nyala/bisa diakses ga)
-- kasih tombol connect di server-actions misal gak connect
-- kasih opsi add another server di server-list
-- kasih opsi delete server buat ngilangin server
-- kalo ada server yang udah pernah connect, masuknya ke server-list
-- misal semua server diilangin, direct nya ke client-page lagi
-- habis input pairing code, munculin text yang muncul di client dan server  buat di cocokin
+- bikin indicator online offline (nyala/bisa diakses ga) (DONE)
+- kasih tombol connect di server-actions misal gak connect (DONE)
+- kasih opsi add another server di server-list (DONE)
+- kasih opsi delete server buat ngilangin server (DONE)
+- kalo ada server yang udah pernah connect, masuknya ke server-list  
+- habis input pairing code, munculin text yang muncul di client dan server buat di cocokin
+- Bikin page kalau client ditolak oleh server (error or smth)
 
 # BACK-END
 - info untuk online-offline tiap server
 - bikin tempat buat nyimpen identitas tiap server
 - kasih durasi server bisa connetc terus menerus ke client (or vice-versa) selama enggak komunikasi satu sama lain
+
+# DEADLINE
+*FRONT END
+
+
+*POWERPOINT DAN GOOGLE FORM
+SABTU MALAM @HADZIQ 
+
+*BACK END
+MINGGU MALAM @ARYA
