@@ -38,8 +38,26 @@
         // Function to delete server item with animation
         function deleteServer(trashIcon) {
             const serverItem = trashIcon.closest('.server-item');
+       
+             // Check if the serverItem exists
+    if (!serverItem) {
+        console.error("Server item not found!");
+        return;
+    }
 
-            // Add the fade-out class to trigger animation
+    // Log to see if the fade-out class is being applied
+    console.log("Deleting server:", serverItem);
+
+    // Apply a class that triggers the collapse and fade-out animation
+    serverItem.classList.add('fade-out');
+
+    // Wait for the transition to finish before removing the element
+    setTimeout(() => {
+        serverItem.remove();
+        console.log("Server item removed");
+    }, 600);  // The duration should match the CSS transition time
+
+
             serverItem.classList.add('fade-out');
 
             // Wait for the animation to complete before removing the element

@@ -149,6 +149,7 @@ input {
   /* Set a maximum width to keep them consistent */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border: 1px solid #ccc;
+  transition: opacity 0.5s ease, transform 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease;
   /* Optional: adds a border for visual clarity */
 }
 
@@ -158,14 +159,26 @@ input {
 }
 
 .server-item {
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  /* Optional: Initial transform to prepare for the animation */
-  transform: translateY(0);
+  background-color: #e0e0e0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 1px 0;  /* Add vertical margin between items */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border: 1px solid #ccc;
+  transition: opacity 0.5s ease, height 0.5s ease, padding 0.5s ease, margin 0.5s ease; /* Smooth transition */
+  overflow: hidden;  /* Ensure content doesn't spill out during collapse */
 }
 
 .server-item.fade-out {
-  opacity: 0;
-  transform: translateY(-10px); /* Moves the element slightly upwards */
+  opacity: 0;   /* Fade the opacity to 0 */
+  height: 0;    /* Collapse height to 0 */
+  padding: 0;   /* Remove padding */
+  margin: 0;    /* Remove margin */
 }
 
 .add-server {
