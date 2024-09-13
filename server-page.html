@@ -8,10 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
-
-    <style>
-
-    </style>
 </head>
 
 <body>
@@ -26,38 +22,62 @@
     </div>
 
     <script>
-        // Example of generating a random server code (4 digits)
-        function generateServerCode() {
-            // Simulating a 4-digit code (you can replace this with an actual server-side value)
-            const serverCode = Math.floor(1000 + Math.random() * 9000); // Generates a random 4-digit number
-            return serverCode;
+        // Function to fetch the pairing code from the backend
+        async function fetchServerCode() {
+            try {
+                const response = await fetch('/api/get-pairing-code'); // Replace with your actual endpoint
+                const data = await response.json();
+                
+                if (response.ok && data.pairingCode) {
+                    return data.pairingCode; // Return the pairing code from the backend
+                } else {
+                    console.error('Failed to fetch pairing code:', data.message || 'Unknown error');
+                    return '0000'; // Fallback code in case of error
+                }
+            } catch (error) {
+                console.error('Error fetching server code:', error);
+                return '0000'; // Fallback code in case of error
+            }
         }
 
-        // Simulated function to check if connection is successful
-        function checkConnectionStatus() {
-            // Simulate checking from server; here we'll just use a random result
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve(true);  // Simulate success (change to false for failure)
-                }, 3000);  // Simulate server response time (3 seconds)
-            });
-        }
-
-        // Display the server code on load
-        function displayServerCode() {
+        // Function to display the server code on the page
+        async function displayServerCode() {
             const pairingCodeElement = document.getElementById('pairingCode');
-            const generatedCode = generateServerCode().toString();
+            const serverCode = await fetchServerCode(); // Fetch the code from the backend
 
             // Create spans for each digit to control spacing
-            for (let i = 0; i < generatedCode.length; i++) {
+            for (let i = 0; i < serverCode.length; i++) {
                 const span = document.createElement('span');
-                span.textContent = generatedCode[i];
+                span.textContent = serverCode[i];
                 span.className = 'digit'; // Apply styles to each digit
                 pairingCodeElement.appendChild(span);
             }
         }
 
-        // Display the server code when the page loads
-        window.onload = displayServerCode;
+        // Simulated function to check connection status from the backend
+        async function checkConnectionStatus() {
+            try {
+                const response = await fetch('/api/check-signal'); // Replace with your actual endpoint
+                const data = await response.json();
+
+                // If the server responds with a specific signal, redirect
+                if (data.signal === 'redirect') {
+                    window.location.href = 'verification-server.html';
+                }
+            } catch (error) {
+                console.error('Error checking connection status:', error);
+            }
+        }
+
+        // Polling function to repeatedly check for the signal
+        function startPollingForSignal() {
+            setInterval(checkConnectionStatus, 5000); // Check every 5 seconds
+        }
+
+        // Run functions when the page loads
+        window.onload = function() {
+            displayServerCode();
+            startPollingForSignal(); // Start checking for signals after displaying the code
+        };
     </script>
 </body>

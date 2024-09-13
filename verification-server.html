@@ -20,13 +20,17 @@
 
     <div style="text-align: center; margin-top: 160px;">
         <h2 id="statusTitle" class="red-hat-display-normal small"
-            style="font-size: 25px; margin-bottom: -10px;">Compare this key with the client device!</h2>
+            style="font-size: 25px; margin-bottom: -10px;">Compare this key with
+            the client device!</h2>
         <div id="publicKey"></div> <!--Display public key-->
         <h2 id="statusTitle" class="red-hat-display-normal small"
             style="font-size: 20px;">Is it the same?</h2>
-        <div style="display: flex; flex-direction: row; gap: 30px; margin-top: 15px; justify-content: center;">
-            <button id="yuhBtn" class="red-hat-display-normal small" style="width: 100px; height: 40px;">Yuh</button>
-            <button id="nahBtn" class="red-hat-display-normal small" style="width: 100px; height: 40px;">Nah</button>
+        <div
+            style="display: flex; flex-direction: row; gap: 30px; margin-top: 15px; justify-content: center;">
+            <button id="yesBtn" class="red-hat-display-normal small"
+                style="width: 100px; height: 40px;">Yes</button>
+            <button id="noBtn" class="red-hat-display-normal small"
+                style="width: 100px; height: 40px;">No</button>
         </div>
     </div>
 
@@ -73,10 +77,14 @@
         async function fetchBase64String() {
             try {
                 const response = await fetch('/api/get-base64'); // Replace with your backend endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 const data = await response.json();
-                return data.base64String; // Adjust this if your backend sends data in a different format
+                return data.base64String || ''; // Ensure an empty string is returned if `base64String` is missing
             } catch (error) {
                 console.error('Error fetching base64 string:', error);
+                return ''; // Return an empty string or handle this scenario in your UI
             }
         }
 
@@ -92,16 +100,20 @@
         async function displayPublicKey() {
             const publicKeyElement = document.getElementById('publicKey');
             const base64String = await fetchBase64String(); // Fetch Base64 string from backend
-            const publicKey = processBase64String(base64String);
+            if (base64String) {
+                const publicKey = processBase64String(base64String);
 
-            // Create spans for each digit to control spacing
-            for (let i = 0; i < publicKey.length; i++) {
-                const span = document.createElement('span');
-                span.textContent = publicKey[i];
-                span.className = 'digit'; // Apply styles to each digit
-                publicKeyElement.appendChild(span);
+                // Create spans for each digit to control spacing
+                for (let i = 0; i < publicKey.length; i++) {
+                    const span = document.createElement('span');
+                    span.textContent = publicKey[i];
+                    span.className = 'digit'; // Apply styles to each digit
+                    publicKeyElement.appendChild(span);
+                }
+            } else {
+                publicKeyElement.textContent = 'Error: Could not retrieve public key'; // Error message in case of failure
             }
-        }
+}
 
         // Function to send a signal to the backend
         async function sendSignalToBackend(signal) {
@@ -114,7 +126,11 @@
                     body: JSON.stringify({ signal: signal })
                 });
                 console.log(`Signal sent: ${signal}`)
-                window.location.href = "server-page-success.html"
+                if (signal === 'yes') {
+                    window.location.href = "server-page-success.html"
+                } else {
+                    window.location.href = "server-page-error-code.html"
+                }
                 ;
             } catch (error) {
                 console.error('Error sending signal:', error);
@@ -122,8 +138,8 @@
         }
 
         // Event listeners for button clicks
-        document.getElementById('yuhBtn').addEventListener('click', () => sendSignalToBackend('yuh'));
-        document.getElementById('nahBtn').addEventListener('click', () => sendSignalToBackend('nah'));
+        document.getElementById('yesBtn').addEventListener('click', () => sendSignalToBackend('yes'));
+        document.getElementById('noBtn').addEventListener('click', () => sendSignalToBackend('no'));
 
         // Initialize
         displayPublicKey();
