@@ -69,9 +69,12 @@
                 <div class="server-actions">
                     <i class="fas fa-file-alt"></i>
                     <span>File transfer</span>
-                    <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
                 </div>
-            `;
+                <div>
+                    <i class="fa-solid fa-trash enclosed-trash" onclick="deleteServer(this)"></i>
+                </div>    
+            `;  
+
             return serverItem;
         }
 

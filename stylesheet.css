@@ -120,6 +120,21 @@ input {
   transform: translate(-50%);
 }
 
+/* Add this CSS to style the trash bin differently */
+.enclosed-trash {
+  border: 1px solid #ccc;   /* Add a border around the trash bin */
+  padding: 5px;             /* Add some padding to create a space around the icon */
+  border-radius: 4px;       /* Slightly round the corners */
+  background-color: #f0f0f0; /* Optional: Add a background color */
+  transition: background-color 0.3s ease; /* Add a hover effect */
+}
+
+/* Add hover effect for the trash icon */
+.enclosed-trash:hover {
+  background-color: #e0e0e0; /* Change background on hover */
+  border-color: #aaa;        /* Darken the border on hover */
+}
+
 /* Server Item Styling */
 .server-item {
   background-color: #e0e0e0;
@@ -469,13 +484,14 @@ input {
   /* Hides the blinking cursor */
 }
 
+
 .server-item .circle-green {
   width: 10px;
   height: 10px;
   border-radius: 50%;
   display: inline-block;
   background-color: green; /* Default to green */
-  margin-right: -30px;
+  margin-right: 10px;
 }
 
 .server-item .circle-red {
@@ -484,7 +500,7 @@ input {
   border-radius: 50%;
   display: inline-block;
   background-color: red; /* Red color */
-  margin-right: -30px;
+  margin-right: 1px;
 }
 
 .fade-out {
