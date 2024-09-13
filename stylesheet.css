@@ -189,7 +189,7 @@ input {
   align-items: center;
   width: 100%;
   /* Make the server items fill the container width */
-  max-width: 540px;
+  max-width: 521px;
   height: 60px ;
   /* Set a maximum width to keep them consistent */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -497,45 +497,77 @@ input {
   /* Hides the blinking cursor */
 }
 
+.server-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
 
-.server-item .circle-green {
-  width: 10px;
-  height: 10px;
+.circle-green, .circle-red {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   display: inline-block;
-  background-color: green; /* Default to green */
   margin-right: 10px;
 }
 
-.server-item .circle-red {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  display: inline-block;
-  background-color: red; /* Red color */
-  margin-right: 10px;
+.server-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.fade-out {
-  opacity: 0;
-  transition: opacity 0.5s;
+.server-info i {
+  font-size: 24px;
+  min-width: 24px; /* Ensures uniform icon width */
+}
+
+.server-name {
+  font-size: 16px;
+  font-family: 'Red Hat Display', sans-serif;
+  margin: 0;
 }
 
 .server-actions {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px; /* Reduced gap */
-  padding: 5px;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.server-actions i {
+  font-size: 18px; /* Set uniform size for icons */
+  min-width: 30px; /* Ensure all icons have the same width */
+  text-align: center; /* Center the icons */
+}
+
+.server-actions .middle-line {
+  width: 10px; /* Fixed width for the middle line */
+  text-align: center;
 }
 
 .server-actions span {
-  display: inline-block;
-  width: 100px;
-  text-align: center;
+  font-size: 14px;
   white-space: nowrap;
+  text-align: center;
+  min-width: 100px; /* Consistent width for action text */
 }
 
-.server-actions span:nth-child(2) { /* Target the middle line */
-  margin-right: 20px; /* Fine-tune the spacing */
+.server-actions span:nth-child(2) { /* Ensures the line is in the middle */
+  text-align: center;
+  display: inline-block;
+}
+
+.server-actions i.fa-trash {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.5s;
 }
