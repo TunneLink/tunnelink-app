@@ -7,13 +7,11 @@
     <title>TunneLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <script src="cookies.js"></script>
-
 </head>
 
 <body>
@@ -27,10 +25,9 @@
         <!-- Server items will be dynamically generated here -->
     </div>
 
+    <div class="popup" id="popup">Maximum characters exceeded!</div> <!-- Red popup message -->
+
     <script>
-        // JavaScript to dynamically generate server items
-        // const serverCount = getCookieValue(serverCounter); // Ganti getCookieValue(serverCounter) -> angka misal mau test - Change this variable to control the number of server items
-        // Example: Change this to simulate connected/disconnected status
         const serverStatuses = [false, false, true, true, false]; // Array of server connection statuses
         const serverCount = 5;
         const serverListContainer = document.getElementById('serverListContainer');
@@ -38,62 +35,101 @@
         // Function to delete server item with animation
         function deleteServer(trashIcon) {
             const serverItem = trashIcon.closest('.server-item');
-       
-             // Check if the serverItem exists
-    if (!serverItem) {
-        console.error("Server item not found!");
-        return;
-    }
+            if (!serverItem) {
+                console.error("Server item not found!");
+                return;
+            }
 
-    // Log to see if the fade-out class is being applied
-    console.log("Deleting server:", serverItem);
-
-    // Apply a class that triggers the collapse and fade-out animation
-    serverItem.classList.add('fade-out');
-
-    // Wait for the transition to finish before removing the element
-    setTimeout(() => {
-        serverItem.remove();
-        console.log("Server item removed");
-    }, 600);  // The duration should match the CSS transition time
-
-
+            console.log("Deleting server:", serverItem);
             serverItem.classList.add('fade-out');
-
-            // Wait for the animation to complete before removing the element
-            serverItem.addEventListener('transitionend', function () {
+            setTimeout(() => {
                 serverItem.remove();
-            });
+                console.log("Server item removed");
+            }, 600); // The duration should match the CSS transition time
         }
 
         // Function to create server item
         function createServerItem(name, isConnected) {
             const serverItem = document.createElement('div');
             serverItem.className = 'server-item';
+            const statusClass = isConnected ? 'circle-green' : 'circle-red';
+            const actionText = isConnected ? 'File transfer' : 'Connect server';
+            const serverIcon = isConnected ? '<i class="fas fa-file-alt"></i>' : '<i class="fa-solid fa-link"></i>';
 
-             const statusClass = isConnected ? 'circle-green' : 'circle-red'; // Green if connected, red if not
-             const actionText = isConnected ? 'File transfer' : '           Connect server'; // Change text based on connection status
-             const serverIcon = isConnected ? '<i class="fas fa-file-alt"></i>': '<i class="fa-solid fa-link"></i>'; 
-             serverItem.innerHTML = `
-        <div class="${statusClass}"></div>
-        <div class="server-info">
-            <i class="fas fa-server"></i>
-            <div>
-                <p class="server-name">${name}</p>
-            </div>
-        </div>
-        <div class="server-actions">
-            <span> <b>|</b> </span>
-        </div>
-        <div class="server-actions">
-            ${serverIcon}
-            <span>${actionText}</span>
-            <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
-        </div>
-    `;
-    return serverItem;
-}
+            serverItem.innerHTML = `
+                <div class="${statusClass}"></div>
+                <div class="server-info">
+                    <i class="fas fa-server"></i>
+                    <div class="server-name-container">
+                        <p class="server-name" contenteditable="true" onfocus="storeOriginalName(this)" oninput="checkCharacterLimit(this)" onfocusout="handleFocusOut(this)" onkeydown="handleEnter(event, this)">${name}</p>
+                    </div>
+                </div>
+                <div class="server-actions">
+                    <span> <b>|</b> </span>
+                </div>
+                <div class="server-actions">
+                    ${serverIcon}
+                    <span>${actionText}</span>
+                    <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
+                </div>
+            `;
 
+            return serverItem;
+        }
+
+        let originalName = '';
+
+        // Store the original server name when the user starts editing
+        function storeOriginalName(serverNameElement) {
+            originalName = serverNameElement.textContent.trim();
+        }
+
+        // Function to save server name changes
+        function saveServerName(serverNameElement) {
+            let newName = serverNameElement.textContent.trim();
+            if (newName.length > 9) {
+                newName = newName.slice(-9); // Save only the last 9 characters
+            }
+            serverNameElement.textContent = newName; // Update the name
+            originalName = newName; // Update the original name
+            hidePopup(); // Hide popup if within limit
+        }
+
+        // Function to check character limit and show popup
+        function checkCharacterLimit(serverNameElement) {
+            const newName = serverNameElement.textContent;
+            if (newName.length > 9) {
+                serverNameElement.textContent = newName.slice(0, 9); // Limit to 9 characters
+                showPopup(); // Show red popup
+            } else {
+                hidePopup(); // Hide popup if within limit
+            }
+            moveCaretToEnd(serverNameElement); // Move caret to end
+        }
+
+        // Function to move caret to end of the contenteditable element
+        function moveCaretToEnd(el) {
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            el.focus();
+        }
+
+        // Handle Enter key press when editing server name
+        function handleEnter(event, element) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                element.blur();
+            }
+        }
+
+        // Handle focus out event to save the server name
+        function handleFocusOut(serverNameElement) {
+            saveServerName(serverNameElement);
+        }
 
         function createAddServer() {
             const addServer = document.createElement('div');
@@ -114,9 +150,21 @@
             window.location.href = "client-page.html";
         }
 
+        // Function to show the red popup message
+        function showPopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'block';
+        }
+
+        // Function to hide the red popup message
+        function hidePopup() {
+            const popup = document.getElementById('popup');
+            popup.style.display = 'none';
+        }
+
         // Loop to create and append server items based on serverCount
         for (let i = 0; i < serverCount; i++) {
-            const serverItem = createServerItem(`Server Name ${i + 1}`, serverStatuses[i]);
+            const serverItem = createServerItem(`Server ${i + 1}`, serverStatuses[i]);
             serverListContainer.appendChild(serverItem);
         }
         const addServer = createAddServer();
