@@ -33,7 +33,7 @@
       "responses": [
         {
           "uuid": "4b2be183-09d3-42a8-9efd-e996add71621",
-          "body": "{\n    \"signal\": \"error\"\n    \n}",
+          "body": "{\n    \"loadingServer\": \"success\",\n    \"pairingCode\": \"9721\",\n    \"serverConnection\": \"success\",\n    \"publicKey\": \"SGVsbG8gd29ybGQh\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

@@ -44,9 +44,13 @@
                 const response = await fetch('http://localhost:3001/test'); // Replace with your actual backend API endpoint
                 const data = await response.json();
 
-                if (data.signal === 'success') { // Check for the signal (assumed to be 'success' when backend confirms)
+                // Assign the loadingServer value from the response to a variable
+                const loadingCode = data.loadingServer; // Assign the loadingServer value to loadingCode
+
+                // Use the loadingCode value to decide where to redirect
+                if (loadingCode === 'success') { 
                     window.location.href = "server-page.html"; // Redirect to success page
-                } else if (data.signal === 'error') {
+                } else if (loadingCode === 'error') {
                     window.location.href = "server-page-error-code.html"; // Redirect to error page
                 }
             } catch (error) {

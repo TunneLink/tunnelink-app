@@ -25,7 +25,7 @@
         // Function to fetch the pairing code from the backend
         async function fetchServerCode() {
             try {
-                const response = await fetch('/api/get-pairing-code'); // Replace with your actual endpoint
+                const response = await fetch('http://localhost:3001/test'); // Replace with your actual endpoint
                 const data = await response.json();
                 
                 if (response.ok && data.pairingCode) {
@@ -57,11 +57,11 @@
         // Simulated function to check connection status from the backend
         async function checkConnectionStatus() {
             try {
-                const response = await fetch('/api/check-signal'); // Replace with your actual endpoint
+                const response = await fetch('http://localhost:3001/test'); // Replace with your actual endpoint
                 const data = await response.json();
 
                 // If the server responds with a specific signal, redirect
-                if (data.signal === 'redirect') {
+                if (data.serverConnection === 'success') {
                     window.location.href = 'verification-server.html';
                 }
             } catch (error) {
