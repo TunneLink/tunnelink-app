@@ -29,7 +29,7 @@
 
     <script>
         const serverStatuses = [false, false, true, true, false]; // Array of server connection statuses
-        const serverCount = 5;
+        const serverCount = getCookieValue('serverCount')
         const serverListContainer = document.getElementById('serverListContainer');
 
         // Function to delete server item with animation
@@ -77,23 +77,60 @@
             return serverItem;
         }
 
-        let originalName = '';
-
-        // Store the original server name when the user starts editing
         function storeOriginalName(serverNameElement) {
             originalName = serverNameElement.textContent.trim();
         }
 
-        // Function to save server name changes
-        function saveServerName(serverNameElement) {
-            let newName = serverNameElement.textContent.trim();
-            if (newName.length > 9) {
-                newName = newName.slice(-9); // Save only the last 9 characters
+        // Save server name change
+        function saveServerName(serverNameElement, serverId) {
+            const newName = serverNameElement.textContent.trim();
+            const servers = loadServersFromCookies();
+            const server = servers.find(s => s.id === serverId);
+            if (server) {
+                server.name = newName;
+                saveServerList(servers);
             }
-            serverNameElement.textContent = newName; // Update the name
-            originalName = newName; // Update the original name
-            hidePopup(); // Hide popup if within limit
         }
+
+        const savedPublicKey = getCookie('savedPublicKey');
+if (savedPublicKey) {
+    console.log("Public Key:", savedPublicKey);
+    // Further action can be taken with the key
+}
+
+function loadServersFromCookies() {
+    // Retrieve all cookies as an object
+    const cookies = getAllCookies();
+
+    // Assuming servers are stored as a JSON string in a cookie named 'servers'
+    if (cookies.servers) {
+        try {
+            return JSON.parse(cookies.servers);
+        } catch (e) {
+            console.error("Error parsing servers from cookies:", e);
+            return []; // Return an empty array if parsing fails
+        }
+    }
+
+    return []; // Return an empty array if no servers cookie is found
+}
+        // Load and display server list
+        function displayServers() {
+            const servers = loadServersFromCookies();
+
+            // Sort servers by creation date (oldest to newest)
+            servers.sort((a, b) => a.id - b.id);
+
+            servers.forEach(server => {
+                const serverItem = createServerItem(server);
+                serverListContainer.appendChild(serverItem);
+            });
+        }
+
+        // Initialize and display servers
+        window.onload = function () {
+            displayServers();
+        };
 
         // Function to check character limit and show popup
         function checkCharacterLimit(serverNameElement) {
