@@ -103,6 +103,7 @@
 
     if (!base64String) {
         publicKeyElement.textContent = 'Error: Could not retrieve public key'; // Error message in case of failure
+        publicKeyElement.style.marginTop = "45px";
         return; // Early exit if publicKey is not available
     }
 
