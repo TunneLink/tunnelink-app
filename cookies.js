@@ -73,7 +73,7 @@ function displayServerList() {
     });
 }
 
-// Example Usage: Call this function to save server info after connecting
+// Example Usage: Call this function to server info after connecting
 saveServerInfo('My Server', 'PublicKey1234');
 
 // Call this function to display the server list in the page

@@ -34,22 +34,34 @@
                 style="color: aliceblue;">LOADING...</h1>
 
         <script>
-                // This variable can be set dynamically based on conditions
-                const redirectCondition = true; // Replace this with your actual condition
-        
-                // Function to handle the redirection
-                function redirectBasedOnCondition() {
-                    if (redirectCondition) {
-                        window.location.href = "server-page.html"; // Replace with the actual page URL
-                    } else {
-                        window.location.href = "server-page-error-code.html"; // Replace with an alternate page URL if needed
+        // Simulating backend signal for polling (this part will be on the backend, replace with actual server-side code)
+        let simulatedSignal = null; // Change this on your backend to simulate receiving the signal.
+
+        // Function to check the signal from the backend
+        async function checkBackendSignal() {
+            try {
+                // Simulate a fetch request to your backend
+                const response = await fetch('http://localhost:3001/test'); // Replace with your actual backend API endpoint
+                const data = await response.json();
+
+                if (data.signal === 'success') { // Check for the signal (assumed to be 'success' when backend confirms)
+                    window.location.href = "server-page.html"; // Redirect to success page
+                } else if (data.signal === 'error') {
+                    window.location.href = "server-page-error-code.html"; // Redirect to error page
                 }
-                }
-        
-                // Wait for a few seconds before redirecting (optional)
-                window.onload = function () {
-                    setTimeout(redirectBasedOnCondition, 3000); // 3000 milliseconds = 3 seconds
-                };
+            } catch (error) {
+                console.error('Error checking backend signal:', error);
+            }
+        }
+
+        // Polling function to continuously check for the signal
+        function pollForSignal() {
+            // Poll every 3 seconds (3000 ms)
+            setInterval(checkBackendSignal, 3000);
+        }
+
+        // Initialize the polling on page load
+        window.onload = pollForSignal;
         </script>
     </body>
     

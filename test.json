@@ -1,0 +1,112 @@
+{
+  "uuid": "a00b9742-611f-46bc-aec9-32c5748ddb51",
+  "lastMigration": 32,
+  "name": "Test",
+  "endpointPrefix": "",
+  "latency": 0,
+  "port": 3001,
+  "hostname": "",
+  "folders": [
+    {
+      "uuid": "ad627bcb-e2b8-4d88-bf3f-03c6df9da410",
+      "name": "",
+      "children": [
+        {
+          "type": "folder",
+          "uuid": "8e559684-a488-4bc0-8cb7-cbed7a48612f"
+        }
+      ]
+    },
+    {
+      "uuid": "8e559684-a488-4bc0-8cb7-cbed7a48612f",
+      "name": "New folder",
+      "children": []
+    }
+  ],
+  "routes": [
+    {
+      "uuid": "1735b5ac-7a6c-4054-bf24-2e95fa631f2d",
+      "type": "http",
+      "documentation": "",
+      "method": "all",
+      "endpoint": "test",
+      "responses": [
+        {
+          "uuid": "4b2be183-09d3-42a8-9efd-e996add71621",
+          "body": "{\n    \"signal\": \"error\"\n    \n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "1735b5ac-7a6c-4054-bf24-2e95fa631f2d"
+    },
+    {
+      "type": "folder",
+      "uuid": "ad627bcb-e2b8-4d88-bf3f-03c6df9da410"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
