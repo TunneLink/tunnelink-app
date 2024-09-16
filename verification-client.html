@@ -88,21 +88,16 @@
 
         // Generate a new server name
         function generateServerName() {
-            let existingPairs = getCookie('serverKeyPairs');
-            let serverKeyPairs = existingPairs ? JSON.parse(existingPairs) : {};
-
-            // Determine the next server name number based on how many are already saved
+            let serverKeyPairs = getLocalStorage('serverKeyPairs') || {};
             const serverCount = Object.keys(serverKeyPairs).length + 1;
             return `Server Name (${serverCount})`;
         }
 
-        // Save server name and public key in cookies
-        function saveServerInfoInCookie(serverName, publicKey) {
-            let existingPairs = getCookie('serverKeyPairs');
-            let serverKeyPairs = existingPairs ? JSON.parse(existingPairs) : {};
 
+        function saveServerInfoInLocalStorage(serverName, publicKey) {
+            let serverKeyPairs = getLocalStorage('serverKeyPairs') || {};
             serverKeyPairs[serverName] = publicKey;
-            setCookie('serverKeyPairs', JSON.stringify(serverKeyPairs), 30);
+            setLocalStorage('serverKeyPairs', serverKeyPairs);
         }
 
         // Handle server verification status and redirect
@@ -118,7 +113,7 @@
 
         // Main function to handle everything on page load
         async function processData() {
-            const data = await fetchData();
+            const data = await fetchData(); // Fetch the data
             if (!data) {
                 document.getElementById('publicKey').textContent = 'Error: Could not retrieve public key';
                 return;
@@ -126,8 +121,10 @@
 
             if (data.publicKey) {
                 displayPublicKey(data.publicKey); // Process and display the public key
-                const serverName = generateServerName();
-                saveServerInfoInCookie(serverName, data.publicKey); // Save the public key and server name in cookies
+                
+                // Wait for the display of the public key, then save the info in localStorage
+                const serverName = generateServerName(); // Generate server name
+                saveServerInfoInLocalStorage(serverName, data.publicKey); // Save the public key and server name in localStorage
             }
 
             if (data.verificationStatus) {
