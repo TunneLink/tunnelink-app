@@ -1,85 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>TunneLink</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
-            rel="stylesheet">
-        <link rel="stylesheet" href="stylesheet.css">
-        <link rel="icon" href="TunneLink logo.png" type="image/png">
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-            rel="stylesheet">
-        <script src="cookies.js"></script>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TunneLink</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="stylesheet.css">
+    <link rel="icon" href="TunneLink logo.png" type="image/png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+</head>
 
-    <body style="background-color: #28313d;">
-        <div class="container center-animation">
-            <div class="track"></div>
-            <div class="train">
-                <div class="carOne"></div>
-                <div class="carTwo"></div>
-                <div class="carThree"></div>
-            </div>
-            <div class="tunnel"></div> <!-- Tunnel element -->
-            <div class="curved-line"></div>
+<body style="background-color: #28313d;">
+    <div class="container center-animation">
+        <div class="track"></div>
+        <div class="train">
+            <div class="carOne"></div>
+            <div class="carTwo"></div>
+            <div class="carThree"></div>
         </div>
-        <h1 class="center-loading red-hat-display-normal small"
-            style="color: aliceblue;">LOADING...</h1>
+        <div class="tunnel"></div> <!-- Tunnel element -->
+        <div class="curved-line"></div>
+    </div>
+    <h1 class="center-loading red-hat-display-normal small" style="color: aliceblue;">LOADING...</h1>
 
-        <script>
-        // Function to send the pairing code to the backend and handle redirection
+    <script>
+        // Function to handle the signal from the backend and redirect based on the value of pairingCodeValidity
+        async function handleSignal() {
+            try {
+                // Fetch the signal data from the backend
+                const response = await fetch('http://localhost:3001/test', { // Replace with your backend URL
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-
-        function incrementServerCounter(serverCounter) {
-    if (checkCookieExists(serverCounter)) {
-        increaseCookieValue(serverCounter, 1);
-    } else {
-        setCookie(serverCounter, 1, 7); // Set the cookie with an initial value and an expiration of 7 days
-    }
-}
-
-
-        function sendCodeToBackend(pairingCode) {
-            fetch('https://your-backend-url.com/verify-code', { // Replace with actual backend URL
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ code: pairingCode })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    incrementServerCounter();
-                    window.location.href = "server-list.html"; // Redirect on success
-                } else {
-                    window.location.href = "server-list.html"; // Redirect on failure
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            })
-            .catch(() => {
-                window.location.href = "server-list.html"; // Redirect on failure
-            });
+
+                // Parse the response as JSON
+                const data = await response.json();
+
+                // Log the data for debugging purposes
+                console.log('Received data:', data);
+
+                // Handle pairingCodeValidity only
+                const { pairingCodeValidity } = data;
+
+                if (pairingCodeValidity === 'success') {
+                    window.location.href = "verification-client.html";
+                } else if (pairingCodeValidity === 'failed') {
+                    window.location.href = "client-page-error-code.html";
+                } else {
+                    console.error('Unexpected pairingCodeValidity value:', pairingCodeValidity);
+                    window.location.href = "client-page-error-code.html";
+                }
+
+            } catch (error) {
+                console.error('Error fetching signal:', error);
+                // Redirect to an error page if there's an issue with fetching the signal
+                window.location.href = "client-page-error-code.html";
+            }
+        }
+
+        // Continously polling for signal
+        function startPollingForSignal() {
+            setInterval(handleSignal, 5000); // Check every 5 seconds
         }
 
         // Execute when the page loads
         window.onload = function () {
-            // Retrieve the pairing code from localStorage
-            const pairingCode = localStorage.getItem('pairingCode');
-            if (pairingCode) {
-                // Send the pairing code to the backend
-                sendCodeToBackend(pairingCode);
-            } else {
-                // If there's no pairing code, redirect to error page
-                window.location.href = "client-page-error-code.html";
-            }
+            // Call the handleSignal function directly
+            handleSignal();
+            startPollingForSignal();
         };
     </script>
-    </body>
+</body>
 
 </html>

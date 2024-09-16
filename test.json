@@ -33,7 +33,7 @@
       "responses": [
         {
           "uuid": "4b2be183-09d3-42a8-9efd-e996add71621",
-          "body": "{\n    \"loadingServer\": \"success\",\n    \"pairingCode\": \"9721\",\n    \"serverConnection\": \"success\",\n    \"publicKey\": \"SGVsbG8gd29ybGQh\"\n}",
+          "body": "{\n    \"loadingServer\": \"success\",\n    \"publicKey\": \"SGVsbG8gd29ybGQh\",\n    \"pairingCodeValidity\": \"success\",\n    \"pairingCode\": \"0932\",\n    \"verificationStatus\": \"success\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

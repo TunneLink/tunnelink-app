@@ -27,7 +27,7 @@
                 <input id="input4" class="no-cursor" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]*" readonly onfocus="this.removeAttribute('readonly')" style="pointer-events: none;">
             </div>
             <p id="errorMessage" class="red-hat-display-normal" style="color: red; display: none; margin-top: 20px; margin-bottom: -40px;">Please input the 4 digits code.</p>
-            <button onclick="checkPairingCode()" style="margin-top: 50px; width: 150px; height: 35px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
+            <button onclick="sendPairingCode()" style="margin-top: 50px; width: 150px; height: 35px; font-size: 16px;" class="red-hat-display-normal small">CONFIRM</button>
         </div>
     </div>
 
@@ -55,7 +55,7 @@
 
                 // Submit form on Enter keypress if all inputs are filled
                 if (event.key === 'Enter') {
-                    checkPairingCode(); // Trigger the submit function
+                    sendPairingCode(); // Trigger the submit function
                 }
             });
         });
@@ -79,15 +79,41 @@
             return filled;
         }
 
-        // Validate and submit pairing code
-        function checkPairingCode() {
+        // Send pairing code to the backend
+        async function sendPairingCode() {
             const errorMessage = document.getElementById('errorMessage');
+
             if (allInputsFilled()) {
                 const pairingCode = getInputValues();
                 errorMessage.style.display = 'none'; // Hide error message if previously shown
-                // Store the pairing code in localStorage
-                localStorage.setItem('pairingCode', pairingCode);
-                window.location.href = 'loading-page-client.html'; // Redirect to loading page
+
+                try {
+                    // Send the pairing code to the backend via POST
+                    const response = await fetch('http://localhost:3001/test', { // Replace with your backend endpoint
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ pairingCode: pairingCode }) // Send pairing code as JSON
+                    });
+
+                    const data = await response.json(); // Parse the response from the backend
+
+                    if (response.ok) {
+                        // If pairing code is valid, redirect to the loading page
+                        window.location.href = 'loading-page-client.html';
+                    } else {
+                        // Handle server response error
+                        console.error('Pairing code validation failed:', data.message || 'Unknown error');
+                        errorMessage.textContent = 'Invalid pairing code. Please try again.';
+                        errorMessage.style.display = 'block'; // Show error message
+                    }
+                } catch (error) {
+                    console.error('Error sending pairing code to backend:', error);
+                    errorMessage.textContent = 'An error occurred. Please try again.';
+                    errorMessage.style.display = 'block'; // Show error message
+                }
+
             } else {
                 errorMessage.style.display = 'block'; // Show error message
             }

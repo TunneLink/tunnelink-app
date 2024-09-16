@@ -16,9 +16,10 @@
             style="width: 180px; height: 75px;"></div>
     </header>
 
-    <div style="text-align: center; margin-top: 125px;">
+    <div style="text-align: center; margin-top: 180px;">
         <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">SERVER PAIRING CODE:</h2>
-        <div id="pairingCode"></div> <!-- Placeholder code -->
+        <div id="pairingCode" style="margin-top: -40px;"></div> <!-- Placeholder code -->
+        <p style="font-size: 24px;">Input this in your client device!</p>
     </div>
 
     <script>
@@ -61,7 +62,7 @@
                 const data = await response.json();
 
                 // If the server responds with a specific signal, redirect
-                if (data.serverConnection === 'success') {
+                if (data.pairingCodeValidity === 'success') {
                     window.location.href = 'verification-server.html';
                 }
             } catch (error) {

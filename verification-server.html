@@ -35,6 +35,21 @@
     </div>
 
     <script>
+        // Function to fetch the base64 string from the backend
+        async function fetchPublicKey() {
+            try {
+            const response = await fetch('http://localhost:3001/test'); // Replace with your backend endpoint
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            return data.publicKey || ''; // Ensure an empty string is returned if `base64String` is missing
+            } catch (error) {
+                console.error('Error fetching base64 string:', error);
+                return ''; // Return an empty string or handle this scenario in your UI
+            }
+        }
+
         // Function to decode Base64 to a Uint8Array (binary)
         function base64ToUint8Array(base64) {
             const binaryString = atob(base64); // Decode Base64 string to binary string
@@ -73,21 +88,6 @@
             return number.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        // Function to fetch the base64 string from the backend
-        async function fetchPublicKey() {
-            try {
-                const response = await fetch('http://localhost:3001/test'); // Replace with your backend endpoint
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                return data.publicKey || ''; // Ensure an empty string is returned if `base64String` is missing
-            } catch (error) {
-                console.error('Error fetching base64 string:', error);
-                return ''; // Return an empty string or handle this scenario in your UI
-            }
-        }
-
         // Main function to decode Base64, compute CRC-16, and convert to hexadecimal
         function processBase64String(base64String) {
             const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
@@ -98,25 +98,25 @@
 
         // Function to display the public key
         async function displayPublicKey() {
-    const publicKeyElement = document.getElementById('publicKey');
-    const base64String = await fetchPublicKey(); // Fetch Base64 string from backend
+        const publicKeyElement = document.getElementById('publicKey');
+        const base64String = await fetchPublicKey(); // Fetch Base64 string from backend
 
-    if (!base64String) {
-        publicKeyElement.textContent = 'Error: Could not retrieve public key'; // Error message in case of failure
-        publicKeyElement.style.marginTop = "45px";
-        return; // Early exit if publicKey is not available
+        if (!base64String) {
+            publicKeyElement.textContent = 'Error: Could not retrieve public key'; // Error message in case of failure
+            publicKeyElement.style.marginTop = "45px";
+            return; // Early exit if publicKey is not available
+        }
+
+        const publicKey = processBase64String(base64String);
+
+        // Create spans for each digit to control spacing
+        for (let i = 0; i < publicKey.length; i++) {
+            const span = document.createElement('span');
+            span.textContent = publicKey[i];
+            span.className = 'digit'; // Apply styles to each digit
+            publicKeyElement.appendChild(span);
+        }
     }
-
-    const publicKey = processBase64String(base64String);
-
-    // Create spans for each digit to control spacing
-    for (let i = 0; i < publicKey.length; i++) {
-        const span = document.createElement('span');
-        span.textContent = publicKey[i];
-        span.className = 'digit'; // Apply styles to each digit
-        publicKeyElement.appendChild(span);
-    }
-}
 
         // Function to send a signal to the backend
         async function sendSignalToBackend(verificationStatus) {
@@ -141,7 +141,6 @@
                 console.error('Error sending signal:', error);
             }
         }
-
 
         // Event listeners for button clicks
         document.getElementById('yesBtn').addEventListener('click', () => sendSignalToBackend('success'));

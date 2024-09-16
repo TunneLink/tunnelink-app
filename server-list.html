@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TunneLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,40 +28,43 @@
     <div class="popup" id="popup">Maximum characters exceeded!</div> <!-- Red popup message -->
 
     <script>
-        const serverStatuses = [false, false, true, true, false]; // Array of server connection statuses
-        const serverCount = getCookieValue('serverCount')
-        const serverListContainer = document.getElementById('serverListContainer');
-
-        // Function to delete server item with animation
-        function deleteServer(trashIcon) {
-            const serverItem = trashIcon.closest('.server-item');
-            if (!serverItem) {
-                console.error("Server item not found!");
-                return;
+        // Function to load servers from cookies
+        function loadServersFromCookies() {
+            const serversCookie = getCookie('servers');
+            if (serversCookie) {
+                try {
+                    // Parse the servers JSON stored in the cookie
+                    return JSON.parse(serversCookie);
+                } catch (e) {
+                    console.error("Error parsing servers from cookies:", e);
+                    return []; // Return an empty array if parsing fails
+                }
             }
-
-            console.log("Deleting server:", serverItem);
-            serverItem.classList.add('fade-out');
-            setTimeout(() => {
-                serverItem.remove();
-                console.log("Server item removed");
-            }, 600); // The duration should match the CSS transition time
+            return []; // Return empty array if no servers found in the cookie
         }
 
-        // Function to create server item
-        function createServerItem(name, isConnected) {
+        // Function to save the server list in cookies
+        function saveServerList(servers) {
+            // Convert the server list to a JSON string and save it in the cookie
+            setCookie('servers', JSON.stringify(servers), 30); // Cookie expires in 30 days
+        }
+
+        // Function to create a server item
+        function createServerItem(server) {
             const serverItem = document.createElement('div');
             serverItem.className = 'server-item';
-            const statusClass = isConnected ? 'circle-green' : 'circle-red';
-            const actionText = isConnected ? 'File transfer' : 'Connect server';
-            const serverIcon = isConnected ? '<i class="fas fa-file-alt"></i>' : '<i class="fa-solid fa-link"></i>';
+            const statusClass = server.isConnected ? 'circle-green' : 'circle-red';
+            const actionText = server.isConnected ? 'File transfer' : 'Connect server';
+            const serverIcon = server.isConnected ? '<i class="fas fa-file-alt"></i>' : '<i class="fa-solid fa-link"></i>';
 
             serverItem.innerHTML = `
                 <div class="${statusClass}"></div>
                 <div class="server-info">
                     <i class="fas fa-server"></i>
                     <div class="server-name-container">
-                        <p class="server-name" contenteditable="true" onfocus="storeOriginalName(this)" oninput="checkCharacterLimit(this)" onfocusout="handleFocusOut(this)" onkeydown="handleEnter(event, this)">${name}</p>
+                        <p class="server-name" contenteditable="true" onfocus="storeOriginalName(this)" oninput="checkCharacterLimit(this)" onfocusout="handleFocusOut(this)" onkeydown="handleEnter(event, this)">
+                            ${server.name}
+                        </p>
                     </div>
                 </div>
                 <div class="server-actions">
@@ -77,8 +80,93 @@
             return serverItem;
         }
 
-        function storeOriginalName(serverNameElement) {
-            originalName = serverNameElement.textContent.trim();
+        // Function to delete server item with animation
+        function deleteServer(trashIcon) {
+            const serverItem = trashIcon.closest('.server-item');
+            if (!serverItem) {
+                console.error("Server item not found!");
+                return;
+            }
+
+            console.log("Deleting server:", serverItem);
+            serverItem.classList.add('fade-out');
+            setTimeout(() => {
+                serverItem.remove();
+                console.log("Server item removed");
+
+                // Remove the server from the cookie as well
+                const serverName = serverItem.querySelector('.server-name').textContent.trim();
+                removeServerFromCookie(serverName);
+
+                // Refresh the server list after deletion
+                displayServers();
+            }, 600); // The duration should match the CSS transition time
+        }
+
+        // Function to remove the server from the cookie
+        function removeServerFromCookie(serverName) {
+            let servers = loadServersFromCookies();
+            servers = servers.filter(server => server.name !== serverName);
+            saveServerList(servers);
+        }
+
+        // Function to display the server list
+        function displayServers() {
+            const serverListContainer = document.getElementById('serverListContainer');
+            const servers = loadServersFromCookies();
+
+            // Sort servers by ID to maintain the order in which they were added
+            servers.sort((a, b) => a.id - b.id);
+
+            // Clear any existing server items in the container
+            serverListContainer.innerHTML = '';
+
+            // Loop through each server and append it to the server list container
+            servers.forEach(server => {
+                const serverItem = createServerItem(server);
+                serverListContainer.appendChild(serverItem);
+            });
+
+            // Add the 'Add Server' button at the end
+            const addServer = createAddServer();
+            serverListContainer.appendChild(addServer);
+        }
+
+        // Function to create the 'Add Server' button
+        function createAddServer() {
+            const addServer = document.createElement('div');
+            addServer.className = 'add-server';
+
+            addServer.innerHTML = `
+                <button class="add-server red-hat-display-normal" onclick="addNewServer()">
+                    <div class="server-info">
+                        <i class="fa-solid fa-circle-plus"></i>
+                        <p class="server-name">Add Server</p>
+                    </div>
+                </button>
+            `;
+            return addServer;
+        }
+
+        // Function to add a new server
+        function addNewServer() {
+            const servers = loadServersFromCookies();
+
+            // Create a new server with a unique ID (based on the current number of servers)
+            const newServer = {
+                id: servers.length + 1, // Increment ID
+                name: `Server ${servers.length + 1}`, // Default server name
+                isConnected: false // Default to not connected
+            };
+
+            // Add the new server to the list
+            servers.push(newServer);
+
+            // Save the updated server list back to the cookie
+            saveServerList(servers);
+
+            // Refresh the server list display
+            displayServers();
         }
 
         // Save server name change
@@ -91,46 +179,6 @@
                 saveServerList(servers);
             }
         }
-
-        const savedPublicKey = getCookie('savedPublicKey');
-if (savedPublicKey) {
-    console.log("Public Key:", savedPublicKey);
-    // Further action can be taken with the key
-}
-
-function loadServersFromCookies() {
-    // Retrieve all cookies as an object
-    const cookies = getAllCookies();
-
-    // Assuming servers are stored as a JSON string in a cookie named 'servers'
-    if (cookies.servers) {
-        try {
-            return JSON.parse(cookies.servers);
-        } catch (e) {
-            console.error("Error parsing servers from cookies:", e);
-            return []; // Return an empty array if parsing fails
-        }
-    }
-
-    return []; // Return an empty array if no servers cookie is found
-}
-        // Load and display server list
-        function displayServers() {
-            const servers = loadServersFromCookies();
-
-            // Sort servers by creation date (oldest to newest)
-            servers.sort((a, b) => a.id - b.id);
-
-            servers.forEach(server => {
-                const serverItem = createServerItem(server);
-                serverListContainer.appendChild(serverItem);
-            });
-        }
-
-        // Initialize and display servers
-        window.onload = function () {
-            displayServers();
-        };
 
         // Function to check character limit and show popup
         function checkCharacterLimit(serverNameElement) {
@@ -168,25 +216,6 @@ function loadServersFromCookies() {
             saveServerName(serverNameElement);
         }
 
-        function createAddServer() {
-            const addServer = document.createElement('div');
-            addServer.className = 'add-server';
-
-            addServer.innerHTML = `
-                <button class="add-server red-hat-display-normal" onclick="redirectClientPage()">
-                    <div class="server-info">
-                        <i class="fa-solid fa-circle-plus"></i>
-                        <p class="server-name">Add Server</p>
-                    </div>
-                </button>
-            `;
-            return addServer;
-        }
-
-        function redirectClientPage() {
-            window.location.href = "client-page.html";
-        }
-
         // Function to show the red popup message
         function showPopup() {
             const popup = document.getElementById('popup');
@@ -199,13 +228,10 @@ function loadServersFromCookies() {
             popup.style.display = 'none';
         }
 
-        // Loop to create and append server items based on serverCount
-        for (let i = 0; i < serverCount; i++) {
-            const serverItem = createServerItem(`Server ${i + 1}`, serverStatuses[i]);
-            serverListContainer.appendChild(serverItem);
-        }
-        const addServer = createAddServer();
-        serverListContainer.appendChild(addServer);
+        // On page load, display the server list
+        window.onload = function() {
+            displayServers();
+        };
     </script>
 </body>
 

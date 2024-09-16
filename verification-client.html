@@ -5,39 +5,34 @@
     <title>TunneLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
-
-    <style>
-
-    </style>
+    <script src="cookies.js"></script>
 </head>
 
 <body>
     <header class="headerbar">
-        <div style="text-align: center;"><img src="tunnelink-logo.png"
-                style="width: 180px; height: 75px;"></div>
+        <div style="text-align: center;"><img src="tunnelink-logo.png" style="width: 180px; height: 75px;"></div>
     </header>
 
     <div style="text-align: center; margin-top: 180px;">
-        <h2 id="statusTitle" class="red-hat-display-normal small"
-            style="font-size: 25px;">Compare this key with the server device!</h2>
-        <div id="publicKey"></div> <!--Display public key-->
+        <h2 id="statusTitle" class="red-hat-display-normal small" style="font-size: 25px;">Compare this key with the server device!</h2>
+        <div id="publicKey"></div> <!-- Display public key -->
     </div>
 
     <script>
-        // Helper function to decode Base64 to a Uint8Array (binary)
-        async function fetchBase64String() {
+        // Fetch data from the backend (publicKey + verificationStatus)
+        async function fetchData() {
             try {
-                const response = await fetch('/api/get-base64'); // Replace with your backend endpoint
-                const data = await response.json();
-                return data.base64String || '';
+                const response = await fetch('http://localhost:3001/test'); // Replace with your backend endpoint
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return await response.json();
             } catch (error) {
-                console.error('Error fetching base64 string:', error);
-                return '';
+                console.error('Error fetching data:', error);
+                return null;
             }
         }
 
@@ -75,43 +70,79 @@
             return number.toString(16).toUpperCase().padStart(4, '0');
         }
 
-        // Process Base64 string to get public key
-       // Process Base64 string to get public key
-async function processBase64String() {
-    const base64String = await fetchBase64String();
-    if (!base64String) {
-        console.error('Error: Base64 string not found');
-        return;
-    }
-    const binaryData = base64ToUint8Array(base64String);
-    const crc16 = computeCRC16(binaryData);
-    const publicKey = toHexadecimal(crc16);
-
-    // Save public key in a cookie
-    setCookie('savedPublicKey', publicKey, 30);
-    document.getElementById('publicKey').innerText = publicKey;
-}
-
-        async function verifyCode() {
-            const verificationCode = document.getElementById('verificationCode').value;
-            try {
-                const base64String = await fetchBase64String();
-                if (!base64String) throw new Error('Base64 string not found');
-
-                // Store the base64String and verificationCode in cookies
-                setCookie('savedPublicKey', base64String, 30);
-                setCookie('verificationCode', verificationCode, 30);
-
-                // Redirect to server list
-                window.location.href = 'server-list.html';
-            } catch (error) {
-                console.error('Verification error:', error);
+        // Process and display the public key
+        function displayPublicKey(base64String) {
+            const publicKeyElement = document.getElementById('publicKey');
+            const binaryData = base64ToUint8Array(base64String); // Step 1: Decode Base64 to binary
+            const crc16 = computeCRC16(binaryData); // Step 2: Compute CRC-16
+            const hexResult = toHexadecimal(crc16); // Step 3: Convert CRC-16 to hexadecimal
+            
+            // Create spans for each digit to control spacing
+            for (let i = 0; i < hexResult.length; i++) {
+                const span = document.createElement('span');
+                span.textContent = hexResult[i];
+                span.className = 'digit'; // Apply styles to each digit
+                publicKeyElement.appendChild(span);
             }
         }
 
-        // On load, process and display the public key
+        // Generate a new server name
+        function generateServerName() {
+            let existingPairs = getCookie('serverKeyPairs');
+            let serverKeyPairs = existingPairs ? JSON.parse(existingPairs) : {};
+
+            // Determine the next server name number based on how many are already saved
+            const serverCount = Object.keys(serverKeyPairs).length + 1;
+            return `Server Name (${serverCount})`;
+        }
+
+        // Save server name and public key in cookies
+        function saveServerInfoInCookie(serverName, publicKey) {
+            let existingPairs = getCookie('serverKeyPairs');
+            let serverKeyPairs = existingPairs ? JSON.parse(existingPairs) : {};
+
+            serverKeyPairs[serverName] = publicKey;
+            setCookie('serverKeyPairs', JSON.stringify(serverKeyPairs), 30);
+        }
+
+        // Handle server verification status and redirect
+        function handleVerificationStatus(status) {
+            if (status === 'success') {
+                window.location.href = 'server-list.html';
+            } else if (status === 'failed') {
+                window.location.href = 'client-page-error-key.html';
+            } else {
+                console.error('Unexpected verificationStatus value:', status);
+            }
+        }
+
+        // Main function to handle everything on page load
+        async function processData() {
+            const data = await fetchData();
+            if (!data) {
+                document.getElementById('publicKey').textContent = 'Error: Could not retrieve public key';
+                return;
+            }
+
+            if (data.publicKey) {
+                displayPublicKey(data.publicKey); // Process and display the public key
+                const serverName = generateServerName();
+                saveServerInfoInCookie(serverName, data.publicKey); // Save the public key and server name in cookies
+            }
+
+            if (data.verificationStatus) {
+                handleVerificationStatus(data.verificationStatus); // Check the verification status and handle redirection
+            }
+        }
+
+        // Polling for signal
+        function startPollingForSignal() {
+            setInterval(fetchData(), 5000); // Check every 5 seconds
+        }
+
+        // On load, process data
         window.onload = function () {
-            processBase64String();
-        };   
+            processData();
+        };
     </script>
 </body>
