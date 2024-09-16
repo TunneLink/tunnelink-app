@@ -150,24 +150,7 @@
 
         // Function to add a new server
         function addNewServer() {
-            const servers = loadServersFromCookies();
-
-            // Create a new server with a unique ID (based on the current number of servers)
-            const newServer = {
-                id: servers.length + 1, // Increment ID
-                name: `Server ${servers.length + 1}`, // Default server name
-                isConnected: false // Default to not connected
-            };
-
-            // Add the new server to the list
-            servers.push(newServer);
-
-            // Save the updated server list back to the cookie
-            saveServerList(servers);
-
-            // Refresh the server list display
-            displayServers();
-        }
+        window.location.href = 'client-page.html'}
 
         // Save server name change
         function saveServerName(serverNameElement, serverId) {
