@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <meta charset="UTF-8"> 
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TunneLink</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="stylesheet.css">
     <link rel="icon" href="TunneLink logo.png" type="image/png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <script src="cookies.js"></script>
 </head>
 
 <body>
@@ -28,16 +27,42 @@
     <div class="popup" id="popup">Maximum characters exceeded!</div> <!-- Red popup message -->
 
     <script>
+        // Function to fetch connection status from backend
+        async function fetchConnectionStatus(publicKey) {
+            try {
+                const response = await fetch('http://localhost:3001/test', {
+                    method: 'POST', // Adjust based on your API needs
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ publicKey: publicKey }), // Send publicKey to backend
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    return data.isConnected; // Adjust this based on the API's response format
+                } else {
+                    console.error('Failed to fetch connection status');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error fetching connection status:', error);
+                return false;
+            }
+        }
+
         // Function to load servers from serverKeyPairs in localStorage
-        function loadServersFromLocalStorage() {
+        async function loadServersFromLocalStorage() {
             const serverKeyPairs = getLocalStorage('serverKeyPairs');
             if (serverKeyPairs) {
-                // Convert object to an array of server entries
-                const servers = Object.entries(serverKeyPairs).map(([name, publicKey], index) => ({
-                    id: index + 1, // Assign an ID to keep the order
-                    name: name,
-                    publicKey: publicKey,
-                    isConnected: false // You can adjust this flag based on connection status logic
+                const servers = await Promise.all(Object.entries(serverKeyPairs).map(async ([name, publicKey], index) => {
+                    const isConnected = await fetchConnectionStatus(publicKey); // Check if the server is connected
+                    return {
+                        id: index + 1, // Assign an ID to keep the order
+                        name: name,
+                        publicKey: publicKey,
+                        isConnected: isConnected, // Set based on the fetched status
+                    };
                 }));
                 return servers;
             }
@@ -46,7 +71,6 @@
 
         // Function to save the server list in localStorage
         function saveServerList(servers) {
-            // Convert the server list to a JSON string and save it in localStorage
             localStorage.setItem('servers', JSON.stringify(servers));
         }
 
@@ -95,43 +119,40 @@
                 serverItem.remove();
                 console.log("Server item removed");
 
-                // Remove the server from localStorage as well
                 const serverName = serverItem.querySelector('.server-name').textContent.trim();
                 removeServerFromLocalStorage(serverName);
 
-                // Refresh the server list after deletion
                 displayServers();
-            }, 600); // The duration should match the CSS transition time
+            }, 600);
         }
 
         // Function to remove the server from localStorage
-        function removeServerFromLocalStorage(serverName) {
-            let servers = loadServersFromLocalStorage();
-            servers = servers.filter(server => server.name !== serverName);
-            saveServerList(servers);
+        async function removeServerFromLocalStorage(serverName) {
+        const serverKeyPairs = getLocalStorage('serverKeyPairs');
+        if (serverKeyPairs && serverKeyPairs[serverName]) {
+            delete serverKeyPairs[serverName]; // Remove server by its name
+            setLocalStorage('serverKeyPairs', serverKeyPairs); // Update localStorage
         }
+    }
 
         // Function to display the server list
-        function displayServers() {
+        async function displayServers() {
             const serverListContainer = document.getElementById('serverListContainer');
-            const servers = loadServersFromLocalStorage();
+            const servers = await loadServersFromLocalStorage();
 
-            // Sort servers by their ID (which is based on the order they were added)
             servers.sort((a, b) => a.id - b.id);
 
-            // Clear any existing server items in the container
             serverListContainer.innerHTML = '';
 
-            // Loop through each server and append it to the server list container
             servers.forEach(server => {
                 const serverItem = createServerItem(server);
                 serverListContainer.appendChild(serverItem);
             });
 
-            // Add the 'Add Server' button at the end
             const addServer = createAddServer();
             serverListContainer.appendChild(addServer);
         }
+
         // Function to create the 'Add Server' button
         function createAddServer() {
             const addServer = document.createElement('div');
@@ -154,26 +175,36 @@
         }
 
         // Save server name change
-        function saveServerName(serverNameElement, serverId) {
-            const newName = serverNameElement.textContent.trim();
-            const servers = loadServersFromLocalStorage();
-            const server = servers.find(s => s.id === serverId);
-            if (server) {
-                server.name = newName;
-                saveServerList(servers);
+        async function saveServerName(serverNameElement) {
+        const newName = serverNameElement.textContent.trim();
+        const originalName = serverNameElement.getAttribute('data-original-name'); // Get the original name before edit
+
+        if (originalName !== newName) {
+            let serverKeyPairs = getLocalStorage('serverKeyPairs');
+            if (serverKeyPairs && serverKeyPairs[originalName]) {
+                const publicKey = serverKeyPairs[originalName]; // Keep the public key
+                delete serverKeyPairs[originalName]; // Remove the old name key
+                serverKeyPairs[newName] = publicKey; // Add the new name with the same public key
+                setLocalStorage('serverKeyPairs', serverKeyPairs); // Save updated key pairs
             }
         }
+    }
+
+    function storeOriginalName(serverNameElement) {
+        const originalName = serverNameElement.textContent.trim();
+        serverNameElement.setAttribute('data-original-name', originalName); // Store the original name as a data attribute
+    }
 
         // Function to check character limit and show popup
         function checkCharacterLimit(serverNameElement) {
             const newName = serverNameElement.textContent;
             if (newName.length > 9) {
-                serverNameElement.textContent = newName.slice(0, 9); // Limit to 9 characters
-                showPopup(); // Show red popup
+                serverNameElement.textContent = newName.slice(0, 9);
+                showPopup();
             } else {
-                hidePopup(); // Hide popup if within limit
+                hidePopup();
             }
-            moveCaretToEnd(serverNameElement); // Move caret to end
+            moveCaretToEnd(serverNameElement);
         }
 
         // Function to move caret to end of the contenteditable element
@@ -216,6 +247,17 @@
         window.onload = function() {
             displayServers();
         };
+
+            // Helper function to get from localStorage
+    function getLocalStorage(key) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : null;
+    }
+
+    // Helper function to set in localStorage
+    function setLocalStorage(key, value) {
+        localStorage.setItem(key, JSON.stringify(value));
+    }
     </script>
 </body>
 
