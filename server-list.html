@@ -28,25 +28,26 @@
     <div class="popup" id="popup">Maximum characters exceeded!</div> <!-- Red popup message -->
 
     <script>
-        // Function to load servers from cookies
-        function loadServersFromCookies() {
-            const serversCookie = getCookie('servers');
-            if (serversCookie) {
-                try {
-                    // Parse the servers JSON stored in the cookie
-                    return JSON.parse(serversCookie);
-                } catch (e) {
-                    console.error("Error parsing servers from cookies:", e);
-                    return []; // Return an empty array if parsing fails
-                }
+        // Function to load servers from serverKeyPairs in localStorage
+        function loadServersFromLocalStorage() {
+            const serverKeyPairs = getLocalStorage('serverKeyPairs');
+            if (serverKeyPairs) {
+                // Convert object to an array of server entries
+                const servers = Object.entries(serverKeyPairs).map(([name, publicKey], index) => ({
+                    id: index + 1, // Assign an ID to keep the order
+                    name: name,
+                    publicKey: publicKey,
+                    isConnected: false // You can adjust this flag based on connection status logic
+                }));
+                return servers;
             }
-            return []; // Return empty array if no servers found in the cookie
+            return []; // Return empty array if no servers found
         }
 
-        // Function to save the server list in cookies
+        // Function to save the server list in localStorage
         function saveServerList(servers) {
-            // Convert the server list to a JSON string and save it in the cookie
-            setCookie('servers', JSON.stringify(servers), 30); // Cookie expires in 30 days
+            // Convert the server list to a JSON string and save it in localStorage
+            localStorage.setItem('servers', JSON.stringify(servers));
         }
 
         // Function to create a server item
@@ -94,18 +95,18 @@
                 serverItem.remove();
                 console.log("Server item removed");
 
-                // Remove the server from the cookie as well
+                // Remove the server from localStorage as well
                 const serverName = serverItem.querySelector('.server-name').textContent.trim();
-                removeServerFromCookie(serverName);
+                removeServerFromLocalStorage(serverName);
 
                 // Refresh the server list after deletion
                 displayServers();
             }, 600); // The duration should match the CSS transition time
         }
 
-        // Function to remove the server from the cookie
-        function removeServerFromCookie(serverName) {
-            let servers = loadServersFromCookies();
+        // Function to remove the server from localStorage
+        function removeServerFromLocalStorage(serverName) {
+            let servers = loadServersFromLocalStorage();
             servers = servers.filter(server => server.name !== serverName);
             saveServerList(servers);
         }
@@ -113,9 +114,9 @@
         // Function to display the server list
         function displayServers() {
             const serverListContainer = document.getElementById('serverListContainer');
-            const servers = loadServersFromCookies();
+            const servers = loadServersFromLocalStorage();
 
-            // Sort servers by ID to maintain the order in which they were added
+            // Sort servers by their ID (which is based on the order they were added)
             servers.sort((a, b) => a.id - b.id);
 
             // Clear any existing server items in the container
@@ -131,7 +132,6 @@
             const addServer = createAddServer();
             serverListContainer.appendChild(addServer);
         }
-
         // Function to create the 'Add Server' button
         function createAddServer() {
             const addServer = document.createElement('div');
@@ -150,12 +150,13 @@
 
         // Function to add a new server
         function addNewServer() {
-        window.location.href = 'client-page.html'}
+            window.location.href = 'client-page.html';
+        }
 
         // Save server name change
         function saveServerName(serverNameElement, serverId) {
             const newName = serverNameElement.textContent.trim();
-            const servers = loadServersFromCookies();
+            const servers = loadServersFromLocalStorage();
             const server = servers.find(s => s.id === serverId);
             if (server) {
                 server.name = newName;
