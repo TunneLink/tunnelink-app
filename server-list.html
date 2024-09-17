@@ -78,10 +78,13 @@
         function createServerItem(server) {
             const serverItem = document.createElement('div');
             serverItem.className = 'server-item';
+            
+            // Set status class and action text/icon based on isConnected
             const statusClass = server.isConnected ? 'circle-green' : 'circle-red';
             const actionText = server.isConnected ? 'File transfer' : 'Connect server';
             const serverIcon = server.isConnected ? '<i class="fas fa-file-alt"></i>' : '<i class="fa-solid fa-link"></i>';
 
+            // Create the HTML content
             serverItem.innerHTML = `
                 <div class="${statusClass}"></div>
                 <div class="server-info">
@@ -101,6 +104,22 @@
                     <i class="fa-solid fa-trash" onclick="deleteServer(this)"></i>
                 </div>
             `;
+
+            // Select the action span element
+            const actionSpan = serverItem.querySelector('.server-actions span');
+
+            // Assign the appropriate function to onclick based on isConnected
+            if (server.isConnected) {
+                actionSpan.onclick = function() {
+                    // Call file transfer function
+                    // startFileTransfer(server);
+                };
+            } else {
+                actionSpan.onclick = function() {
+                    // Call connect server function
+                    // connectServer(server);
+                };
+            }
 
             return serverItem;
         }
@@ -190,10 +209,10 @@
         }
     }
 
-    function storeOriginalName(serverNameElement) {
-        const originalName = serverNameElement.textContent.trim();
-        serverNameElement.setAttribute('data-original-name', originalName); // Store the original name as a data attribute
-    }
+        function storeOriginalName(serverNameElement) {
+            const originalName = serverNameElement.textContent.trim();
+            serverNameElement.setAttribute('data-original-name', originalName); // Store the original name as a data attribute
+        }
 
         // Function to check character limit and show popup
         function checkCharacterLimit(serverNameElement) {
@@ -249,15 +268,15 @@
         };
 
             // Helper function to get from localStorage
-    function getLocalStorage(key) {
-        const data = localStorage.getItem(key);
-        return data ? JSON.parse(data) : null;
-    }
+        function getLocalStorage(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : null;
+        }
 
-    // Helper function to set in localStorage
-    function setLocalStorage(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-    }
+        // Helper function to set in localStorage
+        function setLocalStorage(key, value) {
+            localStorage.setItem(key, JSON.stringify(value));
+        }
     </script>
 </body>
 
