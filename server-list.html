@@ -198,8 +198,8 @@
         // Function to check character limit and show popup
         function checkCharacterLimit(serverNameElement) {
             const newName = serverNameElement.textContent;
-            if (newName.length > 9) {
-                serverNameElement.textContent = newName.slice(0, 9);
+            if (newName.length > 20) {
+                serverNameElement.textContent = newName.slice(0, 20);
                 showPopup();
             } else {
                 hidePopup();
