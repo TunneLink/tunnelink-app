@@ -103,13 +103,18 @@
         // Handle server verification status and redirect
         function handleVerificationStatus(status) {
             if (status === 'success') {
-                window.location.href = 'server-list.html';
+                setTimeout(() => {
+                    window.location.href = 'server-list.html';
+                }, 3000); // Delay of 3 seconds
             } else if (status === 'failed') {
-                window.location.href = 'client-page-error-key.html';
+                setTimeout(() => {
+                    window.location.href = 'client-page-error-key.html';
+                }, 3000); // Delay of 3 seconds
             } else {
                 console.error('Unexpected verificationStatus value:', status);
             }
         }
+
 
         // Main function to handle everything on page load
         async function processData() {
@@ -117,6 +122,10 @@
             if (!data) {
                 document.getElementById('publicKey').textContent = 'Error: Could not retrieve public key';
                 return;
+            }
+            
+            if (data.verificationStatus) {
+                handleVerificationStatus(data.verificationStatus); // Check the verification status and handle redirection
             }
 
             if (data.publicKey) {
@@ -126,20 +135,17 @@
                 const serverName = generateServerName(); // Generate server name
                 saveServerInfoInLocalStorage(serverName, data.publicKey); // Save the public key and server name in localStorage
             }
-
-            if (data.verificationStatus) {
-                handleVerificationStatus(data.verificationStatus); // Check the verification status and handle redirection
-            }
         }
 
         // Polling for signal
         function startPollingForSignal() {
-            setInterval(fetchData(), 5000); // Check every 5 seconds
+            setInterval(processData, 5000); // Check every 5 seconds
         }
 
         // On load, process data
         window.onload = function () {
             processData();
+            startPollingForSignal();
         };
     </script>
 </body>

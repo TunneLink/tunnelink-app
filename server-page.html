@@ -64,9 +64,12 @@
                 // If the server responds with a specific signal, redirect
                 if (data.pairingCodeValidity === 'success') {
                     window.location.href = 'verification-server.html';
+                } else {
+                    window.location.href = "server-page-error-code.html"
                 }
             } catch (error) {
                 console.error('Error checking connection status:', error);
+                window.location.href = "server-page-error-code.html"
             }
         }
 
