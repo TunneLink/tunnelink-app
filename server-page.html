@@ -56,11 +56,11 @@
                     return data.pairing_code; // Return the pairing code from the backend
                 } else {
                     console.error('Failed to fetch pairing code:', data.message || 'Unknown error');
-                    return '0000'; // Fallback code in case of error
+                    return '0932'; // Fallback code in case of error
                 }
             } catch (error) {
                 console.error('Error fetching server code:', error);
-                return '0000'; // Fallback code in case of error
+                return '0932'; // Fallback code in case of error
             }
         }
 
