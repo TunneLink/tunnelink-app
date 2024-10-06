@@ -23,14 +23,36 @@
     </div>
 
     <script>
+        async function getSSHInfo() {
+            try {
+                const response = await fetch('soon to be .json'); // Replace with your actual endpoint
+                const data = await response.json();
+
+                const SSHPubkey = data.ssh_pubkey;
+                const SSHUser = data.ssh_user
+                
+            } catch (error) {
+                console.error('Error generating SSH Pubkey and User');
+            }
+        }
+
         // Function to fetch the pairing code from the backend
         async function fetchServerCode() {
             try {
-                const response = await fetch('http://localhost:3001/test'); // Replace with your actual endpoint
+                const response = await fetch('https://tunnelink.plotecerr64.net/register_server', { // Replace with your backend endpoint
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ "ssh_pubkey": SSHPubkey,
+                                           "ssh_user": SSHUser,
+                                           "ssh_tunnel": 3522,
+                                           "listen_pubkey_tunnel": 3533 })
+                })
                 const data = await response.json();
                 
-                if (response.ok && data.pairingCode) {
-                    return data.pairingCode; // Return the pairing code from the backend
+                if (response.ok && (data.pairing_code)) {
+                    return data.pairing_code; // Return the pairing code from the backend
                 } else {
                     console.error('Failed to fetch pairing code:', data.message || 'Unknown error');
                     return '0000'; // Fallback code in case of error
