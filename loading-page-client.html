@@ -53,7 +53,8 @@
                 const { pairingCodeValidity } = data;
 
                 if (pairingCodeValidity === 'success') {
-                    window.location.href = "verification-client.html";
+                    setTimeout(() => { window.location.href = "verification-client.html";}, 3000)
+
                 } else if (pairingCodeValidity === 'failed') {
                     window.location.href = "client-page-error-code.html";
                 } else {
